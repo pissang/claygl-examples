@@ -1,3 +1,23 @@
+
+::-webkit-scrollbar {
+    height:8px;
+    width:8px;
+    transition:all 0.3s ease-in-out;
+    border-radius:2px;
+}
+::-webkit-scrollbar-button {
+    display:none;
+}
+::-webkit-scrollbar-thumb {
+    width:8px;
+    min-height:15px;
+    background:rgba(50, 50, 50, 0.6) !important;
+    transition:all 0.3s ease-in-out;border-radius:2px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background:rgba(0, 0, 0, 0.5) !important;
+}
+
 html {
     height: 100%;
 
@@ -49,6 +69,32 @@ body {
     -webkit-flex: 1.3;
     flex: 1.3;
     position: relative;
+
+    #toggle-play {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+
+        height: 40px;
+        width: 40px;
+        font-size: 3rem;
+
+        cursor: pointer;
+
+        color: #e2e2e2;
+        
+        transition: all 0.2s ease-out;
+        
+        -webkit-transition: all 0.2s ease-out;
+        -moz-transition: all 0.2s ease-out;
+        -o-transition: all 0.2s ease-out;
+        -ms-transition: all 0.2s ease-out;
+
+        &:hover {
+            color: #38B9C8;
+            font-size: 3.1em;
+        }
+    }
 
     #viewport {
         position: absolute;

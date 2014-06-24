@@ -1,24 +1,9 @@
 define(function(require) {
 
-/**
- * Template code showed in editor
- */
-var templateCode = function() {
-var scene = new qtek.Scene();
-var camera = new qtek.camera.Perspective({
-    aspect: renderer.width / renderer.height
-});
-camera.position.z = 4;
-
-return {
-    scene: scene,
-    camera: camera,
-    frame: function(frameTime) {
-        renderer.render(scene, camera);
-    },
-    dispose: function(){}
-}
-}
+    /**
+     * Template code showed in editor
+     */
+    var templateCode = require('text!./template.js');
 
     function start() {
         
@@ -27,7 +12,7 @@ return {
         jsEditor.editor.setTheme('ace/theme/twilight');
         jsEditor.editor.getSession().setMode('ace/mode/javascript');
 
-        jsEditor.setCode(templateCode.toString().replace(/^[^{]*{\s*/,'').replace(/\s*}[^}]*$/,''));
+        jsEditor.setCode(templateCode);
     }
 
     var jsEditor = {
@@ -42,6 +27,10 @@ return {
 
         setCode: function(code) {
             jsEditor.editor.setValue(code, -1);
+        },
+
+        resize: function() {
+            jsEditor.editor.resize();
         }
     }
 

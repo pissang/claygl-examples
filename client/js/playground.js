@@ -31,14 +31,23 @@ define(function(require) {
 
             $editorJS.hide();
             $editorGLSL.hide();
-            $('#' + $this.data('tab')).show();
+
+            if ($this.data('tab') == 'editor-js') {
+                $editorJS.show();
+                jsEditor.resize();
+            } else {
+                $editorGLSL.show();
+                glslEditor.resize();
+            }
+
         });
     }
 
     function runCode() {
         var jsCode = jsEditor.getCode();
+        var glslCode = glslEditor.getCode();
 
-        preview.runCode(jsCode);
+        preview.runCode(jsCode, glslCode);
     }
 
     return {

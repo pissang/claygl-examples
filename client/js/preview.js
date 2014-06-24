@@ -5,7 +5,9 @@ define(function(require) {
     var renderer;
     var animation = new qtek.animation.Animation();
 
-    var result;
+    var evalResult;
+
+    var inPlay = true;
 
     function resize() {
         var viewport = document.getElementById('viewport');
@@ -21,6 +23,7 @@ define(function(require) {
         });
 
         window.addEventListener('resize', resize);
+        $('#toggle-play').click(togglePlay);
 
         resize();
 
@@ -30,15 +33,37 @@ define(function(require) {
     function runCode(js, glsl) {
         // Dispose previous
         animation.off('frame');
-        if (result) {
-            renderer.disposeScene(result.scene);
+        if (evalResult) {
+            renderer.disposeScene(evalResult.scene);
+        }
+        for (var name in qtek.Shader.codes) {
+            if (name !== 'buildin') {
+                delete qtek.Shader.codes[name];
+            }
+        }
+
+        if (glsl) {
+            qtek.Shader.import(glsl);
         }
 
         var func = new Function('qtek', 'renderer', js);
-        result = func(qtek, renderer);
+        evalResult = func(qtek, renderer);
         
-        if (result.frame) {
-            animation.on('frame', result.frame);
+        if (evalResult.frame) {
+            animation.on('frame', function(frameTime) {
+                if (inPlay) {
+                    evalResult.frame(frameTime);
+                }
+            });
+        }
+    }
+
+    function togglePlay() {
+        inPlay = !inPlay;
+        if (inPlay) {
+            $(this).addClass('pause').removeClass('play');
+        } else {
+            $(this).removeClass('pause').addClass('play');
         }
     }
 

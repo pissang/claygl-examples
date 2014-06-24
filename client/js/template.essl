@@ -1,0 +1,27 @@
+//-----------------------------
+// vertex shader
+//-----------------------------
+@export playground.vertex
+
+uniform mat4 worldViewProjection: WORLDVIEWPROJECTION;
+
+attribute vec3 position: POSITION;
+
+void main()
+{
+    gl_Position = worldViewProjection * vec4(position, 1.0);
+}
+
+@end
+
+//-----------------------------
+// fragment shader
+//-----------------------------
+@export playground.fragment
+
+void main()
+{
+    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+}
+
+@end

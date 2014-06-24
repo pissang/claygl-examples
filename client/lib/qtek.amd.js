@@ -8954,13 +8954,8 @@ define('qtek/core/Cache',[],function() {
                     || this._context[key] === true
         },
 
-        clearContext : function() {
-            this._caches[this._contextId] = {};
-            this._context = {};
-        },
-
         deleteContext : function(contextId) {
-            this._caches[contextId] = {};
+            delete this._caches[contextId];
             this._context = {};
         },
 
@@ -11944,9 +11939,10 @@ define('qtek/Shader',['require','./core/Base','./core/util','./core/Cache','glma
     var importRegex = /(@import)\s*([0-9a-zA-Z_\-\.]*)/g;
     Shader.parseImport = function(shaderStr) {
         shaderStr = shaderStr.replace(importRegex, function(str, importSymbol, importName) {
-            if (_source[importName]) {
+            var str = Shader.source(importName);
+            if (str) {
                 // Recursively parse
-                return Shader.parseImport(_source[importName]);
+                return Shader.parseImport(str);
             } else {
                 console.warn('Shader chunk "' + importName + '" not existed in library');
                 return '';
@@ -11964,13 +11960,32 @@ define('qtek/Shader',['require','./core/Base','./core/util','./core/Cache','glma
      */
     Shader['import'] = function(shaderStr) {
         shaderStr.replace(exportRegex, function(str, exportSymbol, exportName, code) {
-            _source[exportName] = code;
+            var code = code.replace(/(^[\s\t\xa0\u3000]+)|([\u3000\xa0\s\t]+\x24)/g, '');
+            if (code) {
+                var parts = exportName.split('.');
+                var obj = Shader.codes;
+                var i = 0;
+                while(i < parts.length - 1) {
+                    var key = parts[i++];
+                    if (!obj[key]) {
+                        obj[key] = {};
+                    }
+                    obj = obj[key];
+                }
+                key = parts[i];
+                obj[key] = code;
+            }
             return code;
         })
     }
 
-    // Library to store all the loaded shader strings
-    var _source = {};
+    /**
+     * Library to store all the loaded shader codes
+     * @type {Object}
+     * @readOnly
+     * @memberOf qtek.Shader
+     */
+    Shader.codes = {};
 
     /**
      * Get shader source
@@ -11979,12 +11994,18 @@ define('qtek/Shader',['require','./core/Base','./core/util','./core/Cache','glma
      * @memberOf qtek.Shader
      */
     Shader.source = function(name) {
-        var shaderStr = _source[name];
-        if (! shaderStr) {
+        var parts = name.split('.');
+        var obj = Shader.codes;
+        var i = 0;
+        while(obj && i < parts.length) {
+            var key = parts[i++];
+            obj = obj[key];
+        }
+        if (! obj) {
             console.warn('Shader "' + name + '" not existed in library');
             return;
         }
-        return shaderStr;
+        return obj;
     }
 
     return Shader;
@@ -13357,11 +13378,18 @@ define('qtek/shader/library',['require','../Shader','../core/util','./source/bas
      * @param  {string} vertex - Vertex shader code
      * @param  {string} fragment - Fragment shader code
      */
-    function put(name, vertex, fragment) {
+    function template(name, vertex, fragment) {
         _library[name] = {
             vertex : vertex,
             fragment : fragment
         }
+    }
+
+    /**
+     * @memberOf qtek.shader.library
+     */
+    function clear() {
+        _pool = {};
     }
 
     // Some build in shaders
@@ -13376,13 +13404,13 @@ define('qtek/shader/library',['require','../Shader','../core/util','./source/bas
 
     Shader['import'](require('./source/shadowmap.essl'));
 
-    put("buildin.basic", Shader.source("buildin.basic.vertex"), Shader.source("buildin.basic.fragment"));
-    put("buildin.lambert", Shader.source("buildin.lambert.vertex"), Shader.source("buildin.lambert.fragment"));
-    put("buildin.phong", Shader.source("buildin.phong.vertex"), Shader.source("buildin.phong.fragment"));
-    put("buildin.wireframe", Shader.source("buildin.wireframe.vertex"), Shader.source("buildin.wireframe.fragment"));
-    put("buildin.skybox", Shader.source("buildin.skybox.vertex"), Shader.source("buildin.skybox.fragment"));
-    put("buildin.prez", Shader.source("buildin.prez.vertex"), Shader.source("buildin.prez.fragment"));
-    put("buildin.physical", Shader.source("buildin.physical.vertex"), Shader.source("buildin.physical.fragment"));
+    template("buildin.basic", Shader.source("buildin.basic.vertex"), Shader.source("buildin.basic.fragment"));
+    template("buildin.lambert", Shader.source("buildin.lambert.vertex"), Shader.source("buildin.lambert.fragment"));
+    template("buildin.phong", Shader.source("buildin.phong.vertex"), Shader.source("buildin.phong.fragment"));
+    template("buildin.wireframe", Shader.source("buildin.wireframe.vertex"), Shader.source("buildin.wireframe.fragment"));
+    template("buildin.skybox", Shader.source("buildin.skybox.vertex"), Shader.source("buildin.skybox.fragment"));
+    template("buildin.prez", Shader.source("buildin.prez.vertex"), Shader.source("buildin.prez.fragment"));
+    template("buildin.physical", Shader.source("buildin.physical.vertex"), Shader.source("buildin.physical.fragment"));
 
     // Some build in shaders
     Shader['import'](require('./source/compositor/vertex.essl'));
@@ -13398,7 +13426,8 @@ define('qtek/shader/library',['require','../Shader','../core/util','./source/bas
 
     return {
         get : get,
-        put : put
+        template : template,
+        clear: clear
     }
 });
 define('qtek/math/Vector2',['require','glmatrix'],function(require) {
