@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>qtek-playground</title>
+        <link rel="stylesheet" type="text/less" href="css/playground.less" />
+        <script type="text/javascript" src="lib/esl.js"></script>
+        <script type="text/javascript" src="lib/less.js"></script>
+        <!-- Jquery -->
+        <script type="text/javascript" src="lib/jquery/jquery-2.1.1.min.js"></script>
+        <!-- Semantic ui -->
+        <link rel="stylesheet" type="text/css" href="lib/semantic-ui/css/semantic.min.css" />
+        <script type="text/javascript" src="lib/semantic-ui/javascript/semantic.min.js"></script>
+        <!-- qtek -->
+        <!--
+        <script type="text/javascript" src="lib/qtek/qtek.amd.js"></script>
+        -->
+        <!-- ace -->
+        <script type="text/javascript" src="lib/ace/ace.js"></script>
+        <script type="text/javascript" src="lib/ace/mode-glsl.js"></script>
+        <script type="text/javascript" src="lib/ace/mode-javascript.js"></script>
+        <script type="text/javascript" src="lib/ace/theme-twilight.js"></script>
+    </head>
+
+    <body>
+        <div id="playground">
+            <div id="editor">
+                <div class="ui inverted small menu main">
+                    <a class="active item" data-tab="editor-js">JS</a>
+                    <a class="item" data-tab="editor-glsl">GLSL</a>
+                    <div class="right menu">
+                        <div class="item">
+                            <a class="ui purple button" id="run-code">Run</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="editor-js" class="active tab"></div>
+                <div id="editor-glsl" class="tab"></div>
+            </div>
+            <div id="preview">
+                <div id="viewport">
+                    <canvas id="viewport-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            require.config({
+                paths: {
+                    qtek: 'lib/qtek'
+                }
+            });
+            require(['js/playground'], function(playground) {
+                playground.start();
+            });
+        </script>
+    </body>
+</html>
