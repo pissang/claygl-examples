@@ -1,5 +1,6 @@
 define(function(require) {
 
+    var etpl = require('etpl');
     /**
      * Template code showed in editor
      */

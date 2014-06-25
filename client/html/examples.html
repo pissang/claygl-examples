@@ -1,0 +1,25 @@
+<div id="examples" class="ui basic modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Examples
+    </div>
+    <div class="content">
+        <div class="ui four items">
+            <!-- for: ${examples} as ${example} -->
+            <div class="example item" data-path="examples/${example.path}/${example.path}">
+                <div class="image">
+                    <img src="examples/${example.thumb}" alt="${example.name}">
+                </div>
+                <div class="content">
+                    <div class="name">
+                        ${example.name}
+                    </div>
+                    <p class="description">
+                        ${example.description}
+                    </p>
+                </div>
+            </div>
+            <!-- /for -->
+        </div>
+    </div>
+</div>

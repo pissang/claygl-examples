@@ -1,3 +1,4 @@
+var renderer = playground.renderer;
 var scene = new qtek.Scene();
 var camera = new qtek.camera.Perspective({
     aspect: renderer.width / renderer.height
@@ -17,7 +18,7 @@ var cube = new qtek.Mesh({
 });
 scene.add(cube);
 
-return {
+playground.run({
     scene: scene,
     camera: camera,
     frame: function(frameTime) {
@@ -25,4 +26,4 @@ return {
         return renderer.render(scene, camera);
     },
     dispose: function(){}
-}
+});

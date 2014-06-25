@@ -1,0 +1,203 @@
+{
+    "accessors": {
+        "attrbute_1": {
+            "bufferView": "bufferView_5",
+            "byteOffset": 0,
+            "byteStride": 12,
+            "count": 8793,
+            "max": [
+                0.2321349,
+                0.11604,
+                0.05347597,
+                1.0
+            ],
+            "min": [
+                -0.22115500000000002,
+                -0.30505,
+                -0.22110300000000002,
+                1.0
+            ],
+            "type": 35665
+        },
+        "attrbute_2": {
+            "bufferView": "bufferView_5",
+            "byteOffset": 105516,
+            "byteStride": 12,
+            "count": 8793,
+            "max": [
+                0.9999695,
+                0.9986267,
+                0.9998169,
+                1.0
+            ],
+            "min": [
+                -0.9999389999999999,
+                -0.9997864,
+                -0.9999389999999999,
+                1.0
+            ],
+            "type": 35665
+        },
+        "attrbute_3": {
+            "bufferView": "bufferView_5",
+            "byteOffset": 211032,
+            "byteStride": 8,
+            "count": 8793,
+            "max": [
+                0.99493,
+                0.9975799999999999
+            ],
+            "min": [
+                0.01753997,
+                0.009069979
+            ],
+            "type": 35664
+        },
+        "indices_4": {
+            "bufferView": "bufferView_6",
+            "byteOffset": 0,
+            "count": 52794,
+            "type": 5123
+        }
+    },
+    "animations": {},
+    "asset": {},
+    "bufferViews": {
+        "bufferView_5": {
+            "buffer": "leeperrysmith.bin",
+            "byteLength": 281376,
+            "byteOffset": 0,
+            "target": 34962
+        },
+        "bufferView_6": {
+            "buffer": "leeperrysmith.bin",
+            "byteLength": 105588,
+            "byteOffset": 281376,
+            "target": 34963
+        }
+    },
+    "buffers": {
+        "leeperrysmith.bin": {
+            "byteLength": 386964,
+            "path": "leeperrysmith.bin"
+        }
+    },
+    "images": {
+        "image_0": {
+            "path": "diffuse.jpg"
+        }
+    },
+    "materials": {
+        "skin": {
+            "instanceTechnique": {
+                "technique": "technique_0",
+                "values": {
+                    "ambient": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "diffuse": "diffuse_jpg",
+                    "emission": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "transparency": 1
+                }
+            },
+            "name": "skin"
+        }
+    },
+    "meshes": {
+        "leeperrysmith-mesh": {
+            "name": "leeperrysmith",
+            "primitives": [
+                {
+                    "attributes": {
+                        "NORMAL": "attrbute_2",
+                        "POSITION": "attrbute_1",
+                        "TEXCOORD_0": "attrbute_3"
+                    },
+                    "indices": "indices_4",
+                    "material": "skin"
+                }
+            ]
+        }
+    },
+    "nodes": {
+        "leeperrysmith": {
+            "children": [],
+            "matrix": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                -1.6292100018505468e-07,
+                1.0000000000000002,
+                0.0,
+                0.0,
+                -1.0000000000000002,
+                -1.6292100018505468e-07,
+                0.0,
+                0.01697959,
+                0.04810693,
+                0.007840704,
+                1.0
+            ],
+            "meshes": [
+                "leeperrysmith-mesh"
+            ],
+            "name": "leeperrysmith"
+        }
+    },
+    "samplers": {
+        "sampler_0": {
+            "magFilter": 9729,
+            "minFilter": 9987,
+            "wrapS": 10497,
+            "wrapT": 10497
+        }
+    },
+    "scene": "Scene",
+    "scenes": {
+        "Scene": {
+            "nodes": [
+                "leeperrysmith"
+            ]
+        }
+    },
+    "shaders": {},
+    "skins": {},
+    "techniques": {
+        "technique_0": {
+            "parameters": {},
+            "pass": "defaultPass",
+            "passes": {
+                "defaultPass": {
+                    "instanceProgram": {
+                        "attributes": {},
+                        "program": "",
+                        "uniforms": {}
+                    },
+                    "states": {
+                        "blendEnable": false,
+                        "cullFaceEnable": false,
+                        "depthMask": true,
+                        "depthTestEnable": true
+                    }
+                }
+            }
+        }
+    },
+    "textures": {
+        "diffuse_jpg": {
+            "format": 6408,
+            "internalFormat": 6408,
+            "sampler": "sampler_0",
+            "source": "image_0",
+            "target": 3553
+        }
+    }
+}

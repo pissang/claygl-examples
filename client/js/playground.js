@@ -4,12 +4,23 @@
 define(function(require) {
 
     var qtek = require('qtek');
+    var etpl = require('etpl');
 
     var jsEditor = require('./jsEditor');
     var glslEditor = require('./glslEditor');
     var preview = require('./preview');
 
+    etpl.compile(require('text!html/editor.html'));
+    etpl.compile(require('text!html/preview.html'));
+    var renderMain = etpl.compile(require('text!html/playground.html'));
+
+    var renderExamples = etpl.compile(require('text!html/examples.html'));
+    var exampleList = JSON.parse(require('text!examples/examples.json'));
+
     function start() {
+
+        document.getElementById('container').innerHTML = renderMain();
+
         jsEditor.start();
         glslEditor.start();
         preview.start();
@@ -17,6 +28,10 @@ define(function(require) {
         $('#run-code').bind('click', runCode);
 
         enableEditorTab();
+
+        prepareExamples();
+
+        runCode();
     }
 
     function enableEditorTab() {
@@ -39,8 +54,39 @@ define(function(require) {
                 $editorGLSL.show();
                 glslEditor.resize();
             }
-
         });
+    }
+
+    function prepareExamples() {
+        var $examples = $(renderExamples({
+            examples: exampleList
+        }));
+        $('#open-examples').click(function() {
+            $examples.modal('show');
+        });
+
+        $examples.delegate('.example.item', 'click', openExample);
+    }
+
+    function openExample() {
+        var path = $(this).data('path');
+
+        var tasks = qtek.async.Task.makeRequestTask([path + '.js', path + '.essl']);
+        var group = new qtek.async.TaskGroup();
+        group.all(tasks)
+            .success(function(res) {
+                var jsCode = res[0];
+                var glslCode = res[1];
+
+                jsEditor.setCode(jsCode);
+                glslEditor.setCode(glslCode);
+
+                preview.runCode(jsCode, glslCode);
+                $("#examples").modal('hide');
+
+            }).error(function() {
+                console.error("Loaded exists");
+            })
     }
 
     function runCode() {

@@ -1,0 +1,14 @@
+[
+    {
+        "path": "basic",
+        "name": "Basic Scene",
+        "description": "This example will show you how to create a simple scene with a cube, a plane and a spot light in it.",
+        "thumb": "basic/thumb.jpg"
+    },
+    {
+        "path": "head",
+        "name": "Head",
+        "description": " Lee Perry-Smith head",
+        "thumb": "head/thumb.jpg"
+    }
+]

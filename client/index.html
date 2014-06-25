@@ -23,32 +23,12 @@
     </head>
 
     <body>
-        <div id="playground">
-            <div id="editor">
-                <div class="ui inverted small menu main">
-                    <a class="active item" data-tab="editor-js">JS</a>
-                    <a class="item" data-tab="editor-glsl">GLSL</a>
-                    <div class="right menu">
-                        <div class="item">
-                            <a class="ui purple button" id="run-code">Run</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="editor-js" class="active tab"></div>
-                <div id="editor-glsl" class="tab"></div>
-            </div>
-            <div id="preview">
-                <i id="toggle-play" class="pause icon"></i>
-                <div id="viewport">
-                    <canvas id="viewport-canvas"></canvas>
-                </div>
-            </div>
-        </div>
+        <div id="container"></div>
         <script type="text/javascript">
             require.config({
                 paths: {
-                    qtek: 'lib/qtek'
+                    qtek: 'lib/qtek/qtek',
+                    etpl: 'lib/etpl'
                 }
             });
             require(['js/playground'], function(playground) {
