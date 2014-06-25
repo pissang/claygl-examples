@@ -3,12 +3,24 @@
         "path": "basic",
         "name": "Basic Scene",
         "description": "This example will show you how to create a simple scene with a cube, a plane and a spot light in it.",
-        "thumb": "basic/thumb.jpg"
+        "thumb": "basic/thumb.png"
     },
     {
         "path": "head",
         "name": "Head",
         "description": " Lee Perry-Smith head",
-        "thumb": "head/thumb.jpg"
+        "thumb": "head/thumb.png"
+    },
+    {
+        "path": "headNormalMap",
+        "name": "Head with normal map",
+        "description": "Lee Perry-Smith head with normal map",
+        "thumb": "headNormalMap/thumb.png"
+    },
+    {
+        "path": "headShadow",
+        "name": "Head with shadow",
+        "description": "Lee Perry-Smith head with vsm shadow",
+        "thumb": "headShadow/thumb.png"
     }
 ]

@@ -37,11 +37,14 @@ define(function(require) {
 
     function start() {
         api.renderer = new qtek.Renderer({
+            preserveDrawingBuffer: true,
             canvas: document.getElementById('viewport-canvas')
         });
 
         window.addEventListener('resize', resize);
+
         $('#toggle-play').click(togglePlay);
+        $("#capture").click(capture);
 
         resize();
 
@@ -70,6 +73,9 @@ define(function(require) {
             if (evalResult.scene) {
                 api.renderer.disposeScene(evalResult.scene);
             }
+            if (evalResult.dispose) {
+                evalResult.dispose(api.renderer.gl);
+            }
         }
         for (var name in qtek.Shader.codes) {
             if (name !== 'buildin') {
@@ -90,7 +96,10 @@ define(function(require) {
     }
 
     function capture() {
-
+        // api.renderer.canvas.toBlob(function(blob) {
+        //     saveAs(blob, 'thumb.jpg');
+        // });
+        window.open(api.renderer.canvas.toDataURL());
     }
 
     return {
