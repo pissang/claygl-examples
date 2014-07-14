@@ -18,9 +18,27 @@
         "thumb": "headNormalMap/thumb.png"
     },
     {
+        "path": "skybox",
+        "name": "Skybox",
+        "description": "Skybox",
+        "thumb": "skybox/thumb.png"
+    },
+    {
         "path": "headShadow",
         "name": "Head with shadow",
         "description": "Lee Perry-Smith head with vsm shadow",
         "thumb": "headShadow/thumb.png"
+    },
+    {
+        "path": "omnilightShadow",
+        "name": "Omni light shadow",
+        "description": "Omni light shadow",
+        "thumb": "omnilightShadow/thumb.png"
+    },
+    {
+        "path": "monkeys",
+        "name": "8000 monkeys",
+        "description": "8000 monkeys to test performance",
+        "thumb": "monkeys/thumb.png"
     }
 ]

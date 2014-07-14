@@ -421,11 +421,11 @@ define('qtek/core/mixin/derive',['require'],function(require) {
 
     /**
      * Extend a sub class from base class
-     * @param {object|function} makeDefaultOpt default option of this sub class, method of the sub can use this.xxx to access this option
-     * @param {function} [initialize] Initialize after the sub class is instantiated
+     * @param {object|Function} makeDefaultOpt default option of this sub class, method of the sub can use this.xxx to access this option
+     * @param {Function} [initialize] Initialize after the sub class is instantiated
      * @param {Object} [proto] Prototype methods/properties of the sub class
      * @memberOf qtek.core.mixin.derive.
-     * @return {function}
+     * @return {Function}
      */
     function derive(makeDefaultOpt, initialize/*optional*/, proto/*optional*/) {
 
@@ -544,7 +544,7 @@ define('qtek/core/mixin/notifier',[],function() {
 
             var hdls = this.__handlers__[name];
             var l = hdls.length, i = -1, args = arguments;
-            // Optimize from backbone
+            // Optimize advise from backbone
             switch (args.length) {
                 case 1: 
                     while (++i < l)
@@ -575,7 +575,7 @@ define('qtek/core/mixin/notifier',[],function() {
         /**
          * Register event handler
          * @param  {string} name
-         * @param  {function} action
+         * @param  {Function} action
          * @param  {Object} [context]
          * @chainable
          */
@@ -600,7 +600,7 @@ define('qtek/core/mixin/notifier',[],function() {
         /**
          * Register event, event will only be triggered once and then removed
          * @param  {string} name
-         * @param  {function} action
+         * @param  {Function} action
          * @param  {Object} [context]
          * @chainable
          */
@@ -617,9 +617,9 @@ define('qtek/core/mixin/notifier',[],function() {
         },
 
         /**
-         * Alias of on('before' + name)
+         * Alias of once('before' + name)
          * @param  {string} name
-         * @param  {function} action
+         * @param  {Function} action
          * @param  {Object} [context]
          * @chainable
          */
@@ -632,9 +632,9 @@ define('qtek/core/mixin/notifier',[],function() {
         },
 
         /**
-         * Alias of on('after' + name)
+         * Alias of once('after' + name)
          * @param  {string} name
-         * @param  {function} action
+         * @param  {Function} action
          * @param  {Object} [context]
          * @chainable
          */
@@ -648,7 +648,7 @@ define('qtek/core/mixin/notifier',[],function() {
 
         /**
          * Alias of on('success')
-         * @param  {function} action
+         * @param  {Function} action
          * @param  {Object} [context]
          * @chainable
          */
@@ -658,7 +658,7 @@ define('qtek/core/mixin/notifier',[],function() {
 
         /**
          * Alias of on('error')
-         * @param  {function} action
+         * @param  {Function} action
          * @param  {Object} [context]
          * @chainable
          */
@@ -668,7 +668,7 @@ define('qtek/core/mixin/notifier',[],function() {
 
         /**
          * Alias of on('success')
-         * @param  {function} action
+         * @param  {Function} action
          * @param  {Object} [context]
          * @chainable
          */
@@ -697,7 +697,7 @@ define('qtek/core/mixin/notifier',[],function() {
         /**
          * If registered the event handler
          * @param  {string}  name
-         * @param  {function}  action
+         * @param  {Function}  action
          * @return {boolean}
          */
         has : function(name, action) {
@@ -834,7 +834,7 @@ define('qtek/core/util',['require'],function(require){
         },
         /**
          * @param  {Object|Array} obj
-         * @param  {function} iterator
+         * @param  {Function} iterator
          * @param  {Object} [context]
          * @memberOf qtek.core.util
          */
@@ -7820,7 +7820,12 @@ define('qtek/Node',['require','./core/Base','./core/util','./math/Vector3','./ma
                 console.warn('Remove operation can cause unpredictable error when in iterating');
             }
 
-            this._children.splice(this._children.indexOf(node), 1);
+            var idx = this._children.indexOf(node);
+            if (idx < 0) {
+                return;
+            }
+
+            this._children.splice(idx, 1);
             node.parent = null;
 
             if (this.scene) {
@@ -10087,15 +10092,14 @@ define('qtek/DynamicGeometry',['require','./Geometry','./core/util','./math/Vect
         },
 
         generateVertexNormals : function() {
-            var faces = this.faces
-            var len = faces.length
-            var positions = this.attributes.position.value
-            var normals = this.attributes.normal.value
+            var faces = this.faces;
+            var len = faces.length;
+            var positions = this.attributes.position.value;
+            var normals = this.attributes.normal.value;
             var normal = vec3.create();
 
             var v12 = vec3.create(), v23 = vec3.create();
 
-            var difference = positions.length - normals.length;
             for (var i = 0; i < normals.length; i++) {
                 vec3.set(normals[i], 0.0, 0.0, 0.0);
             }
@@ -12971,11 +12975,98 @@ define('qtek/StaticGeometry',['require','./Geometry','./core/util','./math/Bound
         },
 
         generateVertexNormals : function() {
-            console.warn('Static Geometry doesn\'t support normal generate');
+            var faces = this.faces;
+            var positions = this.attributes.position.value;
+            var normals = this.attributes.normal.value;
+
+            if (!normals || normals.length !== positions.length) {
+                normals = this.attributes.normal.value = new Float32Array(positions.length);
+            } else {
+                // Reset
+                for (var i = 0; i < normals.length; i++) {
+                    normals[i] = 0;
+                }
+            }
+
+            var p1 = vec3.create();
+            var p2 = vec3.create();
+            var p3 = vec3.create();
+
+            var v12 = vec3.create();
+            var v23 = vec3.create();
+
+            var n = vec3.create();
+
+            for (var f = 0; f < faces.length;) {
+                var i1 = faces[f++];
+                var i2 = faces[f++];
+                var i3 = faces[f++];
+
+                vec3.set(p1, positions[i1*3], positions[i1*3+1], positions[i1*3+2]);
+                vec3.set(p2, positions[i2*3], positions[i2*3+1], positions[i2*3+2]);
+                vec3.set(p3, positions[i3*3], positions[i3*3+1], positions[i3*3+2]);
+
+                vec3.sub(v12, p1, p2);
+                vec3.sub(v23, p2, p3);
+                vec3.cross(n, v12, v23);
+                // Weighted by the triangle area
+                for (var i = 0; i < 3; i++) {
+                    normals[i1*3+i] = normals[i1*3+i] + n[i];
+                    normals[i2*3+i] = normals[i2*3+i] + n[i];
+                    normals[i3*3+i] = normals[i3*3+i] + n[i];
+                }
+            }
+
+            for (var i = 0; i < normals.length;) {
+                vec3.set(n, normals[i], normals[i+1], normals[i+2]);
+                vec3.normalize(n, n);
+                normals[i++] = n[0];
+                normals[i++] = n[1];
+                normals[i++] = n[2];
+            }
         },
 
         generateFaceNormals : function() {
-            console.warn('Static Geometry doesn\'t support normal generate');
+            if (!this.isUniqueVertex()) {
+                this.generateUniqueVertex();
+            }
+
+            var faces = this.faces;
+            var positions = this.attributes.position.value;
+            var normals = this.attributes.normal.value;
+
+            var p1 = vec3.create();
+            var p2 = vec3.create();
+            var p3 = vec3.create();
+
+            var v12 = vec3.create();
+            var v23 = vec3.create();
+            var n = vec3.create();
+
+            if (!normals) {
+                normals = this.attributes.position.value = new Float32Array(positions.length);
+            }
+            for (var f = 0; f < faces.length;) {
+                var i1 = faces[f++];
+                var i2 = faces[f++];
+                var i3 = faces[f++];
+
+                vec3.set(p1, positions[i1*3], positions[i1*3+1], positions[i1*3+2]);
+                vec3.set(p2, positions[i2*3], positions[i2*3+1], positions[i2*3+2]);
+                vec3.set(p3, positions[i3*3], positions[i3*3+1], positions[i3*3+2]);
+
+                vec3.sub(v12, p1, p2);
+                vec3.sub(v23, p2, p3);
+                vec3.cross(n, v12, v23);
+
+                vec3.normalize(n, n);
+
+                for (var i = 0; i < 3; i++) {
+                    normals[i1*3+i] = n[i];
+                    normals[i2*3+i] = n[i];
+                    normals[i3*3+i] = n[i];
+                }
+            }
         },
 
         generateTangents : function() {
@@ -16225,10 +16316,10 @@ define('qtek/animation/Clip',['require','./easing'],function(require) {
      * @param {number} [opts.gap]
      * @param {number} [opts.playbackRatio]
      * @param {boolean|number} [opts.loop] If loop is a number, it indicate the loop count of animation
-     * @param {string|function} [opts.easing]
-     * @param {function} [opts.onframe]
-     * @param {function} [opts.ondestroy]
-     * @param {function} [opts.onrestart]
+     * @param {string|Function} [opts.easing]
+     * @param {Function} [opts.onframe]
+     * @param {Function} [opts.ondestroy]
+     * @param {Function} [opts.onrestart]
      */
     var Clip = function(opts) {
 
@@ -16282,21 +16373,21 @@ define('qtek/animation/Clip',['require','./easing'],function(require) {
 
         if (typeof(opts.onframe) !== 'undefined') {
             /**
-             * @type {function}
+             * @type {Function}
              */
             this.onframe = opts.onframe;
         }
 
         if (typeof(opts.ondestroy) !== 'undefined') {
             /**
-             * @type {function}
+             * @type {Function}
              */
             this.ondestroy = opts.ondestroy;
         }
 
         if (typeof(opts.onrestart) !== 'undefined') {
             /**
-             * @type {function}
+             * @type {Function}
              */
             this.onrestart = opts.onrestart;
         }
@@ -16567,9 +16658,9 @@ define('qtek/animation/Animation',['require','./Clip','../core/Base'],function(r
          * @param  {Object} target
          * @param  {Object} [options]
          * @param  {boolean} [options.loop]
-         * @param  {function} [options.getter]
-         * @param  {function} [options.setter]
-         * @param  {function} [options.interpolater]
+         * @param  {Function} [options.getter]
+         * @param  {Function} [options.setter]
+         * @param  {Function} [options.interpolater]
          * @return {qtek.animation.Animation._Deferred}
          */
         animate : function(target, options) {
@@ -16625,6 +16716,23 @@ define('qtek/animation/Animation',['require','./Clip','../core/Base'],function(r
         }
     }
 
+    function _cloneValue(value) {
+        if (_isArrayLike(value)) {
+            var len = value.length;
+            if (_isArrayLike(value[0])) {
+                var ret = [];
+                for (var i = 0; i < len; i++) {
+                    ret.push(arraySlice.call(value[i]));
+                }
+                return ret;
+            } else {
+                return arraySlice.call(value)
+            }
+        } else {
+            return value;
+        }
+    }
+
     function _catmullRomInterpolateArray(
         p0, p1, p2, p3, t, t2, t3, out, arrDim
     ) {
@@ -16665,9 +16773,9 @@ define('qtek/animation/Animation',['require','./Clip','../core/Base'],function(r
      * 
      * @param {Object} target
      * @param {boolean} loop
-     * @param {function} getter
-     * @param {function} setter
-     * @param {function} interpolater
+     * @param {Function} getter
+     * @param {Function} setter
+     * @param {Function} interpolater
      */
     function _Deferred(target, loop, getter, setter, interpolater) {
         this._tracks = {};
@@ -16712,7 +16820,9 @@ define('qtek/animation/Animation',['require','./Clip','../core/Base'],function(r
                     if (time !== 0) {
                         this._tracks[propName].push({
                             time : 0,
-                            value : this._getter(this._target, propName)
+                            value : _cloneValue(
+                                this._getter(this._target, propName)
+                            )
                         });   
                     }
                 }
@@ -16725,7 +16835,7 @@ define('qtek/animation/Animation',['require','./Clip','../core/Base'],function(r
         },
         /**
          * callback when running animation
-         * @param  {function} callback callback have two args, animating target and current percent
+         * @param  {Function} callback callback have two args, animating target and current percent
          * @return {qtek.animation.Animation._Deferred}
          * @memberOf qtek.animation.Animation._Deferred.prototype
          */
@@ -16791,18 +16901,7 @@ define('qtek/animation/Animation',['require','./Clip','../core/Base'],function(r
                 var kfValues = [];
                 for (var i = 0; i < trackLen; i++) {
                     kfPercents.push(keyframes[i].time / trackMaxTime);
-                    if (isValueArray) {
-                        if (arrDim == 2) {
-                            kfValues[i] = [];
-                            for (var j = 0; j < firstVal.length; j++) {
-                                kfValues[i].push(arraySlice.call(keyframes[i].value[j]));
-                            }
-                        } else {
-                            kfValues.push(arraySlice.call(keyframes[i].value));
-                        }
-                    } else {
-                        kfValues.push(keyframes[i].value);
-                    }
+                    kfValues.push(keyframes[i].value);
                 }
 
                 // Cache the key of last frame to speed up when 
@@ -16948,7 +17047,7 @@ define('qtek/animation/Animation',['require','./Clip','../core/Base'],function(r
         },
         /**
          * Callback after animation finished
-         * @param {function} func
+         * @param {Function} func
          * @return {qtek.animation.Animation._Deferred}
          * @memberOf qtek.animation.Animation._Deferred.prototype
          */
@@ -17269,10 +17368,10 @@ define('qtek/animation/Blend1DClip',['require','./Clip'],function(require) {
      * @param {number} [opts.gap]
      * @param {number} [opts.playbackRatio]
      * @param {boolean|number} [opts.loop] If loop is a number, it indicate the loop count of animation
-     * @param {string|function} [opts.easing]
-     * @param {function} [opts.onframe]
-     * @param {function} [opts.ondestroy]
-     * @param {function} [opts.onrestart]
+     * @param {string|Function} [opts.easing]
+     * @param {Function} [opts.onframe]
+     * @param {Function} [opts.ondestroy]
+     * @param {Function} [opts.onrestart]
      * @param {object[]} [opts.inputs]
      * @param {number} [opts.position]
      * @param {qtek.animation.Clip} [opts.output]
@@ -17690,10 +17789,10 @@ define('qtek/animation/Blend2DClip',['require','./Clip','../util/delaunay','../m
      * @param {number} [opts.gap]
      * @param {number} [opts.playbackRatio]
      * @param {boolean|number} [opts.loop] If loop is a number, it indicate the loop count of animation
-     * @param {string|function} [opts.easing]
-     * @param {function} [opts.onframe]
-     * @param {function} [opts.ondestroy]
-     * @param {function} [opts.onrestart]
+     * @param {string|Function} [opts.easing]
+     * @param {Function} [opts.onframe]
+     * @param {Function} [opts.ondestroy]
+     * @param {Function} [opts.onrestart]
      * @param {object[]} [opts.inputs]
      * @param {qtek.math.Vector2} [opts.position]
      * @param {qtek.animation.Clip} [opts.output]
@@ -17840,10 +17939,10 @@ define('qtek/animation/TransformClip',['require','./Clip','glmatrix'],function(r
      * @param {number} [opts.gap]
      * @param {number} [opts.playbackRatio]
      * @param {boolean|number} [opts.loop] If loop is a number, it indicate the loop count of animation
-     * @param {string|function} [opts.easing]
-     * @param {function} [opts.onframe]
-     * @param {function} [opts.ondestroy]
-     * @param {function} [opts.onrestart]
+     * @param {string|Function} [opts.easing]
+     * @param {Function} [opts.onframe]
+     * @param {Function} [opts.ondestroy]
+     * @param {Function} [opts.onrestart]
      * @param {object[]} [opts.keyFrames]
      */
     var TransformClip = function(opts) {
@@ -18151,10 +18250,10 @@ define('qtek/animation/SamplerClip',['require','./Clip','./TransformClip','glmat
      * @param {number} [opts.gap]
      * @param {number} [opts.playbackRatio]
      * @param {boolean|number} [opts.loop] If loop is a number, it indicate the loop count of animation
-     * @param {string|function} [opts.easing]
-     * @param {function} [opts.onframe]
-     * @param {function} [opts.ondestroy]
-     * @param {function} [opts.onrestart]
+     * @param {string|Function} [opts.easing]
+     * @param {Function} [opts.onframe]
+     * @param {Function} [opts.ondestroy]
+     * @param {Function} [opts.onrestart]
      */
     var SamplerClip = function(opts) {
 
@@ -20222,7 +20321,7 @@ define('qtek/core/LinkedList',['require'],function(require) {
     }
 
     /**
-     * @param  {function} cb
+     * @param  {Function} cb
      * @param  {} context
      */
     LinkedList.prototype.forEach = function(cb, context) {
@@ -20355,12 +20454,6 @@ define('qtek/core/LRU',['require','./LinkedList'],function(require) {
 
     return LRU;
 });
-;
-define("qtek/deferred/Renderer", function(){});
-
-;
-define("qtek/deferred/StandardMaterial", function(){});
-
 define('qtek/geometry/Cone',['require','../DynamicGeometry','../math/BoundingBox','glmatrix'],function(require) {
 
     var DynamicGeometry = require('../DynamicGeometry');
@@ -20568,7 +20661,7 @@ define('qtek/geometry/Cube',['require','../DynamicGeometry','./Plane','../math/M
                     var attrArray = planes[pos].attributes[attrName].value;
                     for (var i = 0; i < attrArray.length; i++) {
                         var value = attrArray[i];
-                        if (this.inside && attrName === "normal") {
+                        if (self.inside && attrName === "normal") {
                             value[0] = -value[0];
                             value[1] = -value[1];
                             value[2] = -value[2];
@@ -21523,7 +21616,17 @@ define('qtek/loader/GLTF',['require','../core/Base','../core/request','../core/u
         /**
          * @type {string}
          */
-        shaderName : 'buildin.physical'
+        shaderName : 'buildin.physical',
+
+        /**
+         * @type {boolean}
+         */
+        includeCamera: true,
+
+        /**
+         * @type {boolean}
+         */
+        includeLight: true,
     },
 
     /** @lends qtek.loader.GLTF.prototype */
@@ -22139,7 +22242,7 @@ define('qtek/loader/GLTF',['require','../core/Base','../core/request','../core/u
             for (var name in json.nodes) {
                 var nodeInfo = json.nodes[name];
                 var node;
-                if (nodeInfo.camera) {
+                if (nodeInfo.camera && this.includeCamera) {
                     var cameraInfo = json.cameras[nodeInfo.camera];
 
                     if (cameraInfo.projection === "perspective") {
@@ -22158,7 +22261,7 @@ define('qtek/loader/GLTF',['require','../core/Base','../core/request','../core/u
                     node.setName(nodeInfo.name);
                     lib.cameras[nodeInfo.name] = node;
                 }
-                else if (nodeInfo.lights) {
+                else if (nodeInfo.lights && this.includeLight) {
                     var lights = [];
                     for (var i = 0; i < nodeInfo.lights.length; i++) {
                         var lightInfo = json.lights[nodeInfo.lights[i]];
@@ -27664,8 +27767,8 @@ define('qtek/util/texture',['require','../Texture','../texture/Texture2D','../te
     var textureUtil = {
         /**
          * @param  {string|object} path
-         * @param  {function} [onsuccess]
-         * @param  {function} [onerror]
+         * @param  {Function} [onsuccess]
+         * @param  {Function} [onerror]
          * @return {qtek.Texture}
          *
          * @memberOf qtek.util.texture
@@ -27722,8 +27825,8 @@ define('qtek/util/texture',['require','../Texture','../texture/Texture2D','../te
          * @param  {string} path
          * @param  {qtek.texture.TextureCube} cubeMap
          * @param  {qtek.Renderer} renderer
-         * @param  {function} [onsuccess]
-         * @param  {function} [onerror]
+         * @param  {Function} [onsuccess]
+         * @param  {Function} [onerror]
          * 
          * @memberOf qtek.util.texture
          */
@@ -27851,7 +27954,7 @@ define('qtek/util/texture',['require','../Texture','../texture/Texture2D','../te
 /** @namespace qtek.shader */
 /** @namespace qtek.texture */
 /** @namespace qtek.util */
-define('qtek/qtek',['require','qtek/Camera','qtek/DynamicGeometry','qtek/FrameBuffer','qtek/Geometry','qtek/Joint','qtek/Layer','qtek/Light','qtek/Material','qtek/Mesh','qtek/Node','qtek/Renderable','qtek/Renderer','qtek/Scene','qtek/Shader','qtek/Skeleton','qtek/Stage','qtek/StaticGeometry','qtek/Texture','qtek/animation/Animation','qtek/animation/Blend1DClip','qtek/animation/Blend2DClip','qtek/animation/Clip','qtek/animation/SamplerClip','qtek/animation/SkinningClip','qtek/animation/TransformClip','qtek/animation/easing','qtek/async/Task','qtek/async/TaskGroup','qtek/camera/Orthographic','qtek/camera/Perspective','qtek/compositor/Compositor','qtek/compositor/Graph','qtek/compositor/Node','qtek/compositor/Pass','qtek/compositor/SceneNode','qtek/compositor/TextureNode','qtek/compositor/texturePool','qtek/core/Base','qtek/core/Cache','qtek/core/Event','qtek/core/LRU','qtek/core/LinkedList','qtek/core/glenum','qtek/core/glinfo','qtek/core/mixin/derive','qtek/core/mixin/notifier','qtek/core/request','qtek/core/util','qtek/deferred/Renderer','qtek/deferred/StandardMaterial','qtek/geometry/Cone','qtek/geometry/Cube','qtek/geometry/Cylinder','qtek/geometry/Plane','qtek/geometry/Sphere','qtek/light/Ambient','qtek/light/Directional','qtek/light/Point','qtek/light/Spot','qtek/loader/FX','qtek/loader/GLTF','qtek/loader/ThreeModel','qtek/math/BoundingBox','qtek/math/Frustum','qtek/math/Matrix2','qtek/math/Matrix2d','qtek/math/Matrix3','qtek/math/Matrix4','qtek/math/Plane','qtek/math/Quaternion','qtek/math/Ray','qtek/math/Value','qtek/math/Vector2','qtek/math/Vector3','qtek/math/Vector4','qtek/particleSystem/Emitter','qtek/particleSystem/Field','qtek/particleSystem/ForceField','qtek/particleSystem/Particle','qtek/particleSystem/ParticleRenderable','qtek/picking/Pixel','qtek/plugin/FirstPersonControl','qtek/plugin/InfinitePlane','qtek/plugin/OrbitControl','qtek/plugin/Skybox','qtek/plugin/Skydome','qtek/prePass/EnvironmentMap','qtek/prePass/Reflection','qtek/prePass/ShadowMap','qtek/shader/library','qtek/texture/Texture2D','qtek/texture/TextureCube','qtek/util/dds','qtek/util/delaunay','qtek/util/hdr','qtek/util/mesh','qtek/util/texture','glmatrix'], function(require){
+define('qtek/qtek',['require','qtek/Camera','qtek/DynamicGeometry','qtek/FrameBuffer','qtek/Geometry','qtek/Joint','qtek/Layer','qtek/Light','qtek/Material','qtek/Mesh','qtek/Node','qtek/Renderable','qtek/Renderer','qtek/Scene','qtek/Shader','qtek/Skeleton','qtek/Stage','qtek/StaticGeometry','qtek/Texture','qtek/animation/Animation','qtek/animation/Blend1DClip','qtek/animation/Blend2DClip','qtek/animation/Clip','qtek/animation/SamplerClip','qtek/animation/SkinningClip','qtek/animation/TransformClip','qtek/animation/easing','qtek/async/Task','qtek/async/TaskGroup','qtek/camera/Orthographic','qtek/camera/Perspective','qtek/compositor/Compositor','qtek/compositor/Graph','qtek/compositor/Node','qtek/compositor/Pass','qtek/compositor/SceneNode','qtek/compositor/TextureNode','qtek/compositor/texturePool','qtek/core/Base','qtek/core/Cache','qtek/core/Event','qtek/core/LRU','qtek/core/LinkedList','qtek/core/glenum','qtek/core/glinfo','qtek/core/mixin/derive','qtek/core/mixin/notifier','qtek/core/request','qtek/core/util','qtek/geometry/Cone','qtek/geometry/Cube','qtek/geometry/Cylinder','qtek/geometry/Plane','qtek/geometry/Sphere','qtek/light/Ambient','qtek/light/Directional','qtek/light/Point','qtek/light/Spot','qtek/loader/FX','qtek/loader/GLTF','qtek/loader/ThreeModel','qtek/math/BoundingBox','qtek/math/Frustum','qtek/math/Matrix2','qtek/math/Matrix2d','qtek/math/Matrix3','qtek/math/Matrix4','qtek/math/Plane','qtek/math/Quaternion','qtek/math/Ray','qtek/math/Value','qtek/math/Vector2','qtek/math/Vector3','qtek/math/Vector4','qtek/particleSystem/Emitter','qtek/particleSystem/Field','qtek/particleSystem/ForceField','qtek/particleSystem/Particle','qtek/particleSystem/ParticleRenderable','qtek/picking/Pixel','qtek/plugin/FirstPersonControl','qtek/plugin/InfinitePlane','qtek/plugin/OrbitControl','qtek/plugin/Skybox','qtek/plugin/Skydome','qtek/prePass/EnvironmentMap','qtek/prePass/Reflection','qtek/prePass/ShadowMap','qtek/shader/library','qtek/texture/Texture2D','qtek/texture/TextureCube','qtek/util/dds','qtek/util/delaunay','qtek/util/hdr','qtek/util/mesh','qtek/util/texture','glmatrix'], function(require){
 	
 	var exportsObject =  {
 	"Camera": require('qtek/Camera'),
@@ -27913,10 +28016,6 @@ define('qtek/qtek',['require','qtek/Camera','qtek/DynamicGeometry','qtek/FrameBu
 		},
 		"request": require('qtek/core/request'),
 		"util": require('qtek/core/util')
-	},
-	"deferred": {
-		"Renderer": require('qtek/deferred/Renderer'),
-		"StandardMaterial": require('qtek/deferred/StandardMaterial')
 	},
 	"geometry": {
 		"Cone": require('qtek/geometry/Cone'),

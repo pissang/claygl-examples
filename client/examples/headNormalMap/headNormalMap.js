@@ -1,6 +1,8 @@
 var renderer = playground.renderer;
 var camera = new qtek.camera.Perspective({
-    aspect: renderer.width / renderer.height
+    aspect: renderer.width / renderer.height,
+    near: 0.01,
+    far: 5
 });
 var control = new qtek.plugin.OrbitControl({
     domElement: renderer.canvas,

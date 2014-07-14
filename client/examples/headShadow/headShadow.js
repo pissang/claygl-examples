@@ -1,9 +1,11 @@
 var renderer = playground.renderer;
 var camera = new qtek.camera.Perspective({
-    aspect: renderer.width / renderer.height
+    aspect: renderer.width / renderer.height,
+    near: 0.01,
+    far: 5
 });
 var shadowMapPass = new qtek.prePass.ShadowMap({
-    softShadow: qtek.prePass.ShadowMap.VSM
+    softShadow: qtek.prePass.ShadowMap.PCF
 });
 var control = new qtek.plugin.OrbitControl({
     domElement: renderer.canvas,
@@ -36,7 +38,8 @@ gltf.success(function(res) {
 
     var light = new qtek.light.Directional({
         intensity: 0.6,
-        shadowResolution: 1024
+        shadowResolution: 1024,
+        shadowBias: 0.001
     });
     light.position.set(1, 1, 1);
     light.lookAt(qtek.math.Vector3.ZERO);
