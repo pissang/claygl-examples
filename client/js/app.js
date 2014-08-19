@@ -9,21 +9,24 @@ define(function(require) {
     var jsEditor = require('./jsEditor');
     var glslEditor = require('./glslEditor');
     var preview = require('./preview');
+    var statistics = require('./statistics');
 
     etpl.compile(require('text!html/editor.html'));
     etpl.compile(require('text!html/preview.html'));
-    var renderMain = etpl.compile(require('text!html/playground.html'));
 
+    var renderApp = etpl.compile(require('text!html/app.html'));
     var renderExamples = etpl.compile(require('text!html/examples.html'));
+
     var exampleList = JSON.parse(require('text!examples/examples.json'));
 
     function start() {
 
-        document.getElementById('container').innerHTML = renderMain();
+        document.getElementById('container').innerHTML = renderApp();
 
         jsEditor.start();
         glslEditor.start();
         preview.start();
+        statistics.start();
 
         $('#run-code').bind('click', runCode);
 
@@ -85,7 +88,7 @@ define(function(require) {
                 $("#examples").modal('hide');
 
             }).error(function() {
-                console.error("Loaded exists");
+                console.error("Load error");
             })
     }
 

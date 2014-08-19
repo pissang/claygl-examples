@@ -77,15 +77,52 @@ body {
     flex: 1.3;
     position: relative;
 
-    #toggle-play {
+    #viewport {
         position: absolute;
-        bottom: 7%;
-        left: 50%;
+        top: 80px;
+        left: 5px;
+        right: 5px;
+        bottom: 80px;
 
-        cursor: pointer;
+        background-color: #606060;
+        box-shadow: 0px 0px 10px black;
+    }
 
-        color: #e2e2e2;
-        
+    .top {
+        position: absolute;
+        height: 80px;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+    }
+
+    .bottom {
+        position: absolute;
+        height: 80px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+    }
+
+    #statistics {
+        #stats-list {
+            margin-top: 10px;
+        }
+        #stats-list canvas {
+            float:left;
+            margin-left: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+    }
+
+    #toolbar {
+        text-align: center;
+        line-height: 80px;
+    }
+
+    #toolbar .icon {
+
         transition: all 0.2s ease-out;
         
         -webkit-transition: all 0.2s ease-out;
@@ -93,26 +130,13 @@ body {
         -o-transition: all 0.2s ease-out;
         -ms-transition: all 0.2s ease-out;
 
+        cursor: pointer;
+        color: #e2e2e2;
+
         &:hover {
             color: #38B9C8;
             border-color: #38B9C8;
         }
-    }
-
-    #viewport {
-        position: absolute;
-        top: 50%;
-        left: 5px;
-        right: 5px;
-
-        background-color: #606060;
-        box-shadow: 0px 0px 10px black;
-    }
-
-    #toolbar {
-        position: absolute;
-        bottom: 7%;
-        right: 20px;
     }
 }
 

@@ -1,6 +1,7 @@
 define(function(require) {
 
     var qtek = require('qtek');
+    var statistics = require('./statistics');
 
     var evalResult;
 
@@ -13,13 +14,24 @@ define(function(require) {
 
         animation: new qtek.animation.Animation(),
 
+        stats: {
+            fps: 0,
+            frameTime: 0,
+            renderTime: 0
+        },
+
         run: function(res) {
             evalResult = res;
 
             if (evalResult.frame) {
                 api.animation.on('frame', function(frameTime) {
+                    api.stats.fps = Math.round(1000 / frameTime);
+                    api.stats.frameTime = frameTime;
                     if (inPlay) {
+                        var start = Date.now();
                         evalResult.frame(frameTime);
+                        api.stats.renderTime = Date.now() - start;
+                        statistics.update();
                     }
                 });
             }
@@ -28,10 +40,6 @@ define(function(require) {
 
     function resize() {
         var viewport = document.getElementById('viewport');
-        var height = viewport.clientWidth * 10 / 16;
-        viewport.style.height = height + 'px';
-        viewport.style.marginTop = -height / 2 + 'px';
-
         api.renderer.resize(viewport.clientWidth, viewport.clientHeight);
     }
 
@@ -49,6 +57,14 @@ define(function(require) {
         resize();
 
         api.animation.start();
+
+        // Statistics
+        statistics.addStats(function() {
+            return api.stats.fps;
+        }, 0, 100, 'fps');
+        statistics.addStats(function() {
+            return api.stats.renderTime;
+        }, 0, 32, 'ms');
     }
 
     function runCode(js, glsl) {
