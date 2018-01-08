@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="../lib/claygl.js"></script>
+    <style>
+        html, body, #viewport {
+            margin: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div id="viewport"></div>
+
+<script>
+    var exampleName = window.location.search.slice(1);
+    if (exampleName) {
+        var script = document.createElement('script');
+        script.src = `../examples-src/${exampleName}/${exampleName}.js`
+        document.body.appendChild(script);
+    }
+</script>
+</body>
+</html>
