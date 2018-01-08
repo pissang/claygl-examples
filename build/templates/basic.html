@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="../lib/claygl.min.js"></script>
     <script src="../lib/codemirror.min.js"></script>
+    <script src="../lib/mode-javascript.js"></script>
     <link rel="stylesheet" href="../lib/codemirror.css">
     <title>${title}</title>
     <style>
@@ -14,15 +15,14 @@
             text-align: center;
 
             background-color: #fff;
-
-            font-family: Helvetica;
         }
         #main {
             width: 960px;
             margin: 0 auto;
         }
         #viewport {
-            width: 100%;
+            width: 1000px;
+            margin-left: -20px;
             height: 500px;
 
             background-color: #fff;
@@ -30,18 +30,37 @@
         }
         h1 {
             text-align: left;
+            margin-top: 50px;
         }
         h2 {
             margin-top: 50px;
         }
-        #intro, h2, #code {
+        h1, h2, h3, h4, h5 {
+            font-family: "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Arial,sans-serif
+        }
+        #intro, h2, #js-code {
             text-align: left;
         }
-        #code {
+        #intro {
+            font-family: Georgia,Cambria,"Times New Roman",Times,serif;
+            font-size: 20px;
+            line-height: 26px;
+        }
+        #js-code {
             margin-bottom: 100px;
         }
         .CodeMirror {
             height: auto;
+            font-family: Monaco, monospace;
+            font-size: 13px;
+            line-height: 22px;
+        }
+        h1 a, h2 a, h3 a {
+            color: #000;
+            text-decoration: none;
+        }
+        h1 a:hover, h2 a:hover, h3 a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -50,23 +69,21 @@
     <h1>${title}</h1>
     <div id="viewport"></div>
 
-    <script id="main-script">
-${mainCode|raw}
-    </script>
+    <script id="main-script">${mainCode|raw}</script>
 
-    <h2>Itroduction</h2>
+    <h2><a href="#intro"># Itroduction</a></h2>
     <div id="intro">
         ${description|raw}
     </div>
 
 
-    <h2>Code</h2>
+    <h2><a href="#js-code"># JavaScript Code</a></h2>
 
-    <div id="code"></div>
+    <div id="js-code"></div>
 
     <script>
         (function () {
-            var editor = CodeMirror(document.getElementById('code'), {
+            var editor = CodeMirror(document.getElementById('js-code'), {
                 value: document.getElementById('main-script').textContent,
                 lineNumbers: true,
                 mode: 'javascript',
