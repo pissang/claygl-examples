@@ -1,0 +1,29 @@
+{
+  "name": "claygl-examples",
+  "version": "1.0.0",
+  "description": "Examples of ClayGL",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pissang/claygl-playground.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pissang/claygl-playground/issues"
+  },
+  "homepage": "https://github.com/pissang/claygl-playground#readme",
+  "devDependencies": {
+    "front-matter": "^2.3.0",
+    "glob": "^7.1.2",
+    "marked": "^0.3.9",
+    "monaco-editor": "^0.10.1",
+    "san": "^3.3.2"
+  },
+  "dependencies": {
+    "etpl": "^3.2.0"
+  }
+}

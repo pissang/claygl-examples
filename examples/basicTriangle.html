@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../lib/claygl.min.js"></script>
+    <script src="../lib/codemirror.min.js"></script>
+    <link rel="stylesheet" href="../lib/codemirror.css">
+    <title>Basic Triangle</title>
+    <style>
+        body {
+            margin: 0px;
+            text-align: center;
+
+            background-color: #fff;
+
+            font-family: Helvetica;
+        }
+        #main {
+            width: 960px;
+            margin: 0 auto;
+        }
+        #viewport {
+            width: 100%;
+            height: 500px;
+
+            background-color: #fff;
+            /* box-shadow: 0px 0px 20px rgba(0,0,0,0.1); */
+        }
+        h1 {
+            text-align: left;
+        }
+        h2 {
+            margin-top: 50px;
+        }
+        #intro, h2, #code {
+            text-align: left;
+        }
+        #code {
+            margin-bottom: 100px;
+        }
+        .CodeMirror {
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<div id="main">
+    <h1>Basic Triangle</h1>
+    <div id="viewport"></div>
+
+    <script id="main-script">
+var TRIANGLE_POSITIONS = [
+    [-0.5, -0.5, 0],
+    [0.5, -0.5, 0],
+    [0, 0.5, 0]
+];
+
+var app = clay.application.create('#viewport', {
+    init: function (app) {
+        // Create a orthographic camera
+        var camera = app.createCamera(null, null, 'orthographic');
+        // Create a empty geometry and set the triangle vertices
+        var geometry = new clay.StaticGeometry();
+        geometry.attributes.position.fromArray(TRIANGLE_POSITIONS);
+
+        var mesh = app.createMesh(geometry, {
+            // Use basic shader that only show color
+            shader: 'clay.basic'
+        });
+        mesh.material.set('color', 'blue');
+    },
+
+    loop: function () {}
+});
+    </script>
+
+    <h2>Itroduction</h2>
+    <div id="intro">
+        <p>This example demonstrates how to create a geometry with custom vertices.</p>
+
+    </div>
+
+
+    <h2>Code</h2>
+
+    <div id="code"></div>
+
+    <script>
+        (function () {
+            var editor = CodeMirror(document.getElementById('code'), {
+                value: document.getElementById('main-script').textContent,
+                lineNumbers: true,
+                mode: 'javascript',
+                readOnly: true
+            })
+        })();
+    </script>
+</div>
+</body>
+</html>

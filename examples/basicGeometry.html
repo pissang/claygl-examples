@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../lib/claygl.min.js"></script>
+    <script src="../lib/codemirror.min.js"></script>
+    <link rel="stylesheet" href="../lib/codemirror.css">
+    <title>Basic Geometries</title>
+    <style>
+        body {
+            margin: 0px;
+            text-align: center;
+
+            background-color: #fff;
+
+            font-family: Helvetica;
+        }
+        #main {
+            width: 960px;
+            margin: 0 auto;
+        }
+        #viewport {
+            width: 100%;
+            height: 500px;
+
+            background-color: #fff;
+            /* box-shadow: 0px 0px 20px rgba(0,0,0,0.1); */
+        }
+        h1 {
+            text-align: left;
+        }
+        h2 {
+            margin-top: 50px;
+        }
+        #intro, h2, #code {
+            text-align: left;
+        }
+        #code {
+            margin-bottom: 100px;
+        }
+        .CodeMirror {
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<div id="main">
+    <h1>Basic Geometries</h1>
+    <div id="viewport"></div>
+
+    <script id="main-script">
+var app = clay.application.create('#viewport', {
+
+    init: function (app) {
+
+        // Create a perspective camera.
+        this._camera = app.createCamera([0, 2, 5], [0, 0, 0]);
+
+        // Create a white directional light.
+        app.createDirectionalLight([-1, -1, -1], '#fff', 0.7);
+
+        // Create a ground with plane
+        var groundPlane = app.createPlane();
+        // Scale the plane to 100x100 on x and y dimensions.
+        groundPlane.scale.set(100, 100, 1);
+        // Defaultly plane is facing the camera. So rotate it to face the top.
+        groundPlane.rotation.rotateX(-Math.PI / 2);
+
+        // Create geometries
+
+        // Create a cube
+        var cube = app.createCube();
+        // Create a sphere and put it on the right of the cube
+        var sphere = app.createSphere();
+        sphere.position.x = 3;
+        // Create a cone and put it on the left of the cube.
+        // createMesh is a more general method to create a mesh with any geometry and material.
+        // And you can found more procedural geometry constructor under `clay.geometry`
+        var cone = app.createMesh(new clay.geometry.Cone());
+        cone.position.x = -3;
+    },
+
+    loop: function (app) {
+        // Do nothing in loop
+    }
+});
+    </script>
+
+    <h2>Itroduction</h2>
+    <div id="intro">
+        <p>This example demonstrates how to create procedural geometries like sphere, cube, plane in ClayGL</p>
+
+    </div>
+
+
+    <h2>Code</h2>
+
+    <div id="code"></div>
+
+    <script>
+        (function () {
+            var editor = CodeMirror(document.getElementById('code'), {
+                value: document.getElementById('main-script').textContent,
+                lineNumbers: true,
+                mode: 'javascript',
+                readOnly: true
+            })
+        })();
+    </script>
+</div>
+</body>
+</html>

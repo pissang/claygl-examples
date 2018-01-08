@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../lib/claygl.min.js"></script>
+    <script src="../lib/codemirror.min.js"></script>
+    <link rel="stylesheet" href="../lib/codemirror.css">
+    <title>Shadow of Point Light on the Samba Dancing Model</title>
+    <style>
+        body {
+            margin: 0px;
+            text-align: center;
+
+            background-color: #fff;
+
+            font-family: Helvetica;
+        }
+        #main {
+            width: 960px;
+            margin: 0 auto;
+        }
+        #viewport {
+            width: 100%;
+            height: 500px;
+
+            background-color: #fff;
+            /* box-shadow: 0px 0px 20px rgba(0,0,0,0.1); */
+        }
+        h1 {
+            text-align: left;
+        }
+        h2 {
+            margin-top: 50px;
+        }
+        #intro, h2, #code {
+            text-align: left;
+        }
+        #code {
+            margin-bottom: 100px;
+        }
+        .CodeMirror {
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<div id="main">
+    <h1>Shadow of Point Light on the Samba Dancing Model</h1>
+    <div id="viewport"></div>
+
+    <script id="main-script">
+var app = clay.application.create('#viewport', {
+
+    graphic: {
+        shadow: true
+    },
+
+    init: function (app) {
+        // Create camera
+        this._camera = app.createCamera([0, 150, 200], [0, 100, 0]);
+
+        // Load boombox model.
+        app.loadModel('../assets/models/SambaDancing/SambaDancing.gltf');
+
+        // Create lights
+        app.createDirectionalLight([-1, -1, -1], '#fff', 0.7);
+        app.createAmbientLight('#fff', 0.3);
+
+        this._pointLight1 = app.createPointLight([50, 100, 50], 500, '#00f', 2);
+        this._pointLight2 = app.createPointLight([-80, 150, 70], 500, '#0f0', 2);
+        this._pointLight1.castShadow = true;
+        this._pointLight2.castShadow = true;
+
+        app.createSphere(20, {
+            shader: 'clay.basic', color: [0, 0, 1]
+        }, this._pointLight1);
+
+        app.createSphere(20, {
+            shader: 'clay.basic', color: [0, 1, 0]
+        }, this._pointLight2);
+
+
+        // Create a room.
+        var cube = app.createCubeInside(1, {
+            roughness: 1,
+            color: [0.3, 0.3, 0.3]
+        });
+        // Cube not cast shadow to reduce the bounding box of scene and increse the shadow resolution.
+        cube.castShadow = false;
+        cube.scale.set(400, 400, 400);
+        cube.position.y = 400;
+
+        // Use orbit control
+        this._control = new clay.plugin.OrbitControl({
+            target: this._camera,
+            domElement: app.container
+        });
+    },
+
+    loop: function (app) {
+        this._control.update(app.frameTime);
+        this._pointLight1.rotateAround(new clay.math.Vector3(0, 100, 0), new clay.math.Vector3(0.1, 1, 0.1), 0.1);
+        this._pointLight2.rotateAround(new clay.math.Vector3(0, 120, 0), new clay.math.Vector3(-0.1, 1, -0.2), 0.05);
+    }
+});
+    </script>
+
+    <h2>Itroduction</h2>
+    <div id="intro">
+        <p>This example demonstrates how to load an animated model and add points light with shadow map.</p>
+<p>Model samba dancing is from <a href="https://www.mixamo.com/">Mixamo</a></p>
+
+    </div>
+
+
+    <h2>Code</h2>
+
+    <div id="code"></div>
+
+    <script>
+        (function () {
+            var editor = CodeMirror(document.getElementById('code'), {
+                value: document.getElementById('main-script').textContent,
+                lineNumbers: true,
+                mode: 'javascript',
+                readOnly: true
+            })
+        })();
+    </script>
+</div>
+</body>
+</html>
