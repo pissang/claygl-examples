@@ -1,7 +1,18 @@
 var app = clay.application.create('#viewport', {
+
+    graphic: {
+        shadow: true,
+
+        // Enable tonemapping
+        tonemapping: true,
+
+        // Use linear color space instead of default sRGB.
+        linear: true
+    },
+
     init: function (app) {
         // Create camera
-        this._camera = app.createCamera([0, 1, 3], [0, 0, 0]);
+        this._camera = app.createCamera([2, 1, -2.6], [0, 0, 0]);
 
         // Create light
         app.createDirectionalLight([-1, -1, -1]);
@@ -14,8 +25,10 @@ var app = clay.application.create('#viewport', {
             domElement: app.container
         });
 
+        app.createAmbientCubemapLight('../assets/textures/hdr/pisa.hdr', 1, 1);
+
         // Load boombox model. return a load promise to make sure the look will be start after model loaded.
-        return app.loadModel('../assets/models/suzanne/suzanne.gltf');
+        return app.loadModel('../assets/models/DamagedHelmet/DamagedHelmet.gltf');
     },
 
     loop: function (app) {

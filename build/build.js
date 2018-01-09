@@ -10,6 +10,10 @@ function waitTime(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
+function parseMarkdownExampleLinks() {
+    // TODO
+}
+
 var BUILD_THUMBS = true;
 
 (async () => {
@@ -66,8 +70,8 @@ var BUILD_THUMBS = true;
                     console.log(msg.text);
                 })
                 console.log(url);
-                await page.goto(url);
-                await waitTime(300);
+                // https://stackoverflow.com/questions/46160929/puppeteer-wait-for-all-images-to-load-then-take-screenshot
+                await page.goto(url, {'waitUntil' : 'networkidle0'});
                 await page.screenshot({path: __dirname + '/../thumb/' + basename + '.png' });
                 await page.close();
 

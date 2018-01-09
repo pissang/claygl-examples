@@ -11,7 +11,7 @@
     <script src="../lib/codemirror.min.js"></script>
     <script src="../lib/mode-javascript.js"></script>
     <link rel="stylesheet" href="../lib/codemirror.css">
-    <title>Use Orbit Camera Control</title>
+    <title>Load a PBR Model</title>
     <style>
         body {
             margin: 0px;
@@ -69,13 +69,24 @@
 </head>
 <body>
 <div id="main">
-    <h1>Use Orbit Camera Control</h1>
+    <h1>Load a PBR Model</h1>
     <div id="viewport"></div>
 
     <script id="main-script">var app = clay.application.create('#viewport', {
+
+    graphic: {
+        shadow: true,
+
+        // Enable tonemapping
+        tonemapping: true,
+
+        // Use linear color space instead of default sRGB.
+        linear: true
+    },
+
     init: function (app) {
         // Create camera
-        this._camera = app.createCamera([0, 1, 3], [0, 0, 0]);
+        this._camera = app.createCamera([2, 1, -2.6], [0, 0, 0]);
 
         // Create light
         app.createDirectionalLight([-1, -1, -1]);
@@ -88,8 +99,10 @@
             domElement: app.container
         });
 
+        app.createAmbientCubemapLight('../assets/textures/hdr/pisa.hdr', 1, 1);
+
         // Load boombox model. return a load promise to make sure the look will be start after model loaded.
-        return app.loadModel('../assets/models/suzanne/suzanne.gltf');
+        return app.loadModel('../assets/models/DamagedHelmet/DamagedHelmet.gltf');
     },
 
     loop: function (app) {
@@ -100,9 +113,8 @@
 
     <h2><a href="#intro"># Itroduction</a></h2>
     <div id="intro">
-        <p>This example demonstrates how to use orbit control on the camera in ClayGL.</p>
-<h3 id="prerequisites">Prerequisites</h3>
-<p>See <a href="./basicModelMonkey.html">Load a Model - Suzanne Monkey</a> to learn how to load a model in glTF.</p>
+        <p>This example demonstrates loading glTF model with PBR materials. PBR materials are usually used with <a href="https://en.wikipedia.org/wiki/Image-based_lighting">image based lighting</a>. ClayGL provide method <code>app.createAmbientCubemapLight</code> to load a HDR texture, do prefiltering, and the create an <code>AmbientCubeMap</code> with the prefilerted cubemap for specular lighting. In addition, it will also create an <code>AmbientSH</code> for diffuse lighting using technique called <a href="https://en.wikipedia.org/wiki/Spherical_harmonics">spherical harmonics</a></p>
+<p>See <a href="https://www.marmoset.co/posts/basic-theory-of-physically-based-rendering/">Basic Theory of Physically Based Rendering</a> to know more about PBR.</p>
 
     </div>
 
