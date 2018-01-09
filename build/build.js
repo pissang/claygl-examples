@@ -10,7 +10,7 @@ function waitTime(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-var BUILD_THUMBS = false;
+var BUILD_THUMBS = true;
 
 (async () => {
     // https://github.com/GoogleChrome/puppeteer/issues/1260

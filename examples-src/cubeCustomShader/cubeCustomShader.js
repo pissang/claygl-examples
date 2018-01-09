@@ -1,6 +1,3 @@
-// Shader in ClayGL use semantics like `POSITION`, `NORMAL`, `WORLDVIEWPROJECTION` to indicate
-// what the attributes/uniform is and tells the application how to set the data.
-
 var vertexShader = `
 attribute vec3 position: POSITION;
 attribute vec3 normal: NORMAL;
@@ -24,12 +21,14 @@ void main() {
 var app = clay.application.create('#viewport', {
     init: function (app) {
         // Create a orthographic camera
-        var camera = app.createCamera(null, null, 'orthographic');
+        this._camera = app.createCamera([0, 2, 5], [0, 0, 0]);
         // Create a empty geometry and set the triangle vertices
-        var cube = app.createCube(1, {
+        this._cube = app.createCube(1, {
             shader: new clay.Shader(vertexShader, fragmentShader)
         });
     },
 
-    loop: function () {}
+    loop: function (app) {
+        this._cube.rotation.rotateY(app.frameTime / 1000);
+    }
 });

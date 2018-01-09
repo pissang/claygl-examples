@@ -11,7 +11,7 @@
     <script src="../lib/codemirror.min.js"></script>
     <script src="../lib/mode-javascript.js"></script>
     <link rel="stylesheet" href="../lib/codemirror.css">
-    <title>Basic Geometries</title>
+    <title>Use Orbit Camera Control</title>
     <style>
         body {
             margin: 0px;
@@ -69,49 +69,36 @@
 </head>
 <body>
 <div id="main">
-    <h1>Basic Geometries</h1>
+    <h1>Use Orbit Camera Control</h1>
     <div id="viewport"></div>
 
     <script id="main-script">var app = clay.application.create('#viewport', {
-
     init: function (app) {
-        // Create a perspective camera.
-        this._camera = app.createCamera([0, 2, 5], [0, 0, 0]);
+        // Create camera
+        this._camera = app.createCamera([0, 1, 3], [0, 0, 0]);
 
-        // Create a white directional light.
-        app.createDirectionalLight([-1, -2, -1], '#fff', 1);
+        // Create light
+        app.createDirectionalLight([-1, -1, -1]);
 
-        // Create a ground with plane
-        var groundPlane = app.createPlane();
-        // Scale the plane to 10x10 on x and y dimensions.
-        groundPlane.scale.set(10, 10, 1);
-        // Defaultly plane is facing the camera. So rotate it to face the top.
-        groundPlane.rotation.rotateX(-Math.PI / 2);
-        groundPlane.position.y = -1;
-        groundPlane.material.set('color', '#333');
+        // Use orbit control
+        this._control = new clay.plugin.OrbitControl({
+            target: this._camera,
+            domElement: app.container
+        });
 
-        // Create geometries
-
-        // Create a cube
-        var cube = app.createCube();
-        // Create a sphere and put it on the right of the cube
-        var sphere = app.createSphere();
-        sphere.position.x = 3;
-        // Create a cone and put it on the left of the cube.
-        // createMesh is a more general method to create a mesh with any geometry and material.
-        // And you can found more procedural geometry constructor under `clay.geometry`
-        var cone = app.createMesh(new clay.geometry.Cone());
-        cone.position.x = -3;
+        // Load boombox model. return a load promise to make sure the look will be start after model loaded.
+        return app.loadModel('../assets/models/suzanne/suzanne.gltf');
     },
 
     loop: function (app) {
-        // Do nothing in loop
+        this._control.update(app.frameTime);
     }
 });</script>
 
     <h2><a href="#intro"># Itroduction</a></h2>
     <div id="intro">
-        <p>This example demonstrates how to create procedural geometries like sphere, cube, plane in ClayGL</p>
+        <p>This example demonstrates how to use orbit control on the camera in ClayGL.</p>
+<p>Also see <a href="./basicModelMonkey.html">Load a Model - Suzanne Monkey</a> to learn how to load a model in glTF.</p>
 
     </div>
 
