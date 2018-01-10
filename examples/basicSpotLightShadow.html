@@ -11,7 +11,7 @@
     <script src="../lib/codemirror.min.js"></script>
     <script src="../lib/mode-javascript.js"></script>
     <link rel="stylesheet" href="../lib/codemirror.css">
-    <title>Cube with Custom Shader</title>
+    <title>Use Spot Light</title>
     <style>
         body {
             margin: 0px;
@@ -30,6 +30,16 @@
 
             background-color: #fff;
             /* box-shadow: 0px 0px 20px rgba(0,0,0,0.1); */
+        }
+        #nav {
+            height: 40px;
+            border-bottom: 1px solid rgba(0,0,0,0.2);
+            text-align: left;
+        }
+        #nav #logo {
+            height: 20px;
+            margin-left: 30px;
+            margin-top: 10px;
         }
         h1 {
             text-align: left;
@@ -68,50 +78,56 @@
     </style>
 </head>
 <body>
+<div id="nav">
+    <img src="../img/logo.svg" id="logo" alt="">
+</div>
 <div id="main">
-    <h1>Cube with Custom Shader</h1>
+    <h1>Use Spot Light</h1>
     <div id="viewport"></div>
 
-    <script id="main-script">var vertexShader = `
-attribute vec3 position: POSITION;
-attribute vec3 normal: NORMAL;
+    <script id="main-script">var app = clay.application.create('#viewport', {
 
-uniform mat4 worldViewProjection : WORLDVIEWPROJECTION;
+    graphic: {
+        shadow: true
+    },
 
-varying vec3 v_Normal;
-void main() {
-    gl_Position = worldViewProjection * vec4(position, 1.0);
-    v_Normal = normal;
-}
-`;
-
-var fragmentShader = `
-varying vec3 v_Normal;
-void main() {
-    gl_FragColor = vec4(v_Normal, 1.0);
-}
-`;
-
-var app = clay.application.create('#viewport', {
     init: function (app) {
-        // Create a orthographic camera
-        this._camera = app.createCamera([0, 2, 5], [0, 0, 0]);
-        // Create a empty geometry and set the triangle vertices
-        this._cube = app.createCube(1, {
-            shader: new clay.Shader(vertexShader, fragmentShader)
+
+        // Set a black background color
+        app.renderer.clearColor = [0, 0, 0, 1];
+
+        // Create camera
+        this._camera = app.createCamera([2, 2, 2], [0, 0, 0]);
+
+        // Create light
+        var spotlight = app.createSpotLight([-2, 1, 3], [0, 0, 0], 10, '#fff', 2);
+        // Increase the resolution of shadow map
+        spotlight.shadowResolution = 1024;
+
+        // Use orbit control
+        this._control = new clay.plugin.OrbitControl({
+            // The target or orbit control. Usually is a camera.
+            target: this._camera,
+            // The HTMLDomElement where we need to addEventListener.
+            domElement: app.container
+        });
+
+        // Load boombox model. return a load promise to make sure the look will be start after model loaded.
+        return app.loadModel('../assets/models/BasicScene/scene.gltf', {
+            // Need to change the up axis from z axis to y axis, which is used in ClayGL, or other WebGL apps.
+            upAxis: 'z'
         });
     },
 
     loop: function (app) {
-        this._cube.rotation.rotateY(app.frameTime / 1000);
+        // Control status must be updated each frame.
+        this._control.update(app.frameTime);
     }
 });</script>
 
     <h2><a href="#intro"># Itroduction</a></h2>
     <div id="intro">
-        <p>This example demonstrates how to use a custom shader in ClayGL.</p>
-<p>Shader in ClayGL use semantics like <code>POSITION</code>, <code>NORMAL</code>, <code>WORLDVIEWPROJECTION</code> to indicate what the attributes/uniform is and tells the application how to set the data.</p>
-
+        
     </div>
 
 

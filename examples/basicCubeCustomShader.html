@@ -11,7 +11,7 @@
     <script src="../lib/codemirror.min.js"></script>
     <script src="../lib/mode-javascript.js"></script>
     <link rel="stylesheet" href="../lib/codemirror.css">
-    <title>Basic Geometries</title>
+    <title>Cube with Custom Shader</title>
     <style>
         body {
             margin: 0px;
@@ -82,49 +82,48 @@
     <img src="../img/logo.svg" id="logo" alt="">
 </div>
 <div id="main">
-    <h1>Basic Geometries</h1>
+    <h1>Cube with Custom Shader</h1>
     <div id="viewport"></div>
 
-    <script id="main-script">var app = clay.application.create('#viewport', {
+    <script id="main-script">var vertexShader = `
+attribute vec3 position: POSITION;
+attribute vec3 normal: NORMAL;
 
+uniform mat4 worldViewProjection : WORLDVIEWPROJECTION;
+
+varying vec3 v_Normal;
+void main() {
+    gl_Position = worldViewProjection * vec4(position, 1.0);
+    v_Normal = normal;
+}
+`;
+
+var fragmentShader = `
+varying vec3 v_Normal;
+void main() {
+    gl_FragColor = vec4(v_Normal, 1.0);
+}
+`;
+
+var app = clay.application.create('#viewport', {
     init: function (app) {
-        // Create a perspective camera.
+        // Create a orthographic camera
         this._camera = app.createCamera([0, 2, 5], [0, 0, 0]);
-
-        // Create a white directional light.
-        app.createDirectionalLight([-1, -2, -1], '#fff', 1);
-
-        // Create a ground with plane
-        var groundPlane = app.createPlane();
-        // Scale the plane to 10x10 on x and y dimensions.
-        groundPlane.scale.set(10, 10, 1);
-        // Defaultly plane is facing the camera. So rotate it to face the top.
-        groundPlane.rotation.rotateX(-Math.PI / 2);
-        groundPlane.position.y = -1;
-        groundPlane.material.set('color', '#333');
-
-        // Create geometries
-
-        // Create a cube
-        var cube = app.createCube();
-        // Create a sphere and put it on the right of the cube
-        var sphere = app.createSphere();
-        sphere.position.x = 3;
-        // Create a cone and put it on the left of the cube.
-        // createMesh is a more general method to create a mesh with any geometry and material.
-        // And you can found more procedural geometry constructor under `clay.geometry`
-        var cone = app.createMesh(new clay.geometry.Cone());
-        cone.position.x = -3;
+        // Create a empty geometry and set the triangle vertices
+        this._cube = app.createCube({
+            shader: new clay.Shader(vertexShader, fragmentShader)
+        });
     },
 
     loop: function (app) {
-        // Do nothing in loop
+        this._cube.rotation.rotateY(app.frameTime / 1000);
     }
 });</script>
 
     <h2><a href="#intro"># Itroduction</a></h2>
     <div id="intro">
-        <p>This example demonstrates how to create procedural geometries like sphere, cube, plane in ClayGL</p>
+        <p>This example demonstrates how to use a custom shader in ClayGL.</p>
+<p>Shader in ClayGL use semantics like <code>POSITION</code>, <code>NORMAL</code>, <code>WORLDVIEWPROJECTION</code> to indicate what the attributes/uniform is and tells the application how to set the data.</p>
 
     </div>
 

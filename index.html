@@ -19,7 +19,18 @@
             width: 960px;
             margin: 0 auto;
         }
+        #nav {
+            height: 40px;
+            border-bottom: 1px solid rgba(0,0,0,0.2);
+            text-align: left;
+        }
+        #nav #logo {
+            height: 20px;
+            margin-left: 30px;
+            margin-top: 10px;
+        }
         h1 {
+            margin-top: 50px;
             text-align: left;
             font-family: "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Arial,sans-serif;
         }
@@ -38,6 +49,7 @@
             box-shadow: 0px 0px 30px rgba(0,0,0,0.2);
         }
         .item h5 {
+            height: 40px;
             font-size: 18px;
             font-weight: normal;
             font-family: "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Arial,sans-serif;
@@ -45,14 +57,32 @@
     </style>
 </head>
 <body>
+<div id="nav">
+    <img src="./img/logo.svg" id="logo" alt="">
+</div>
 <div id="main">
     <h1>
-        ClayGL - Examples
+        Examples
     </h1>
     
     <div class="item">
         <a href="examples/basicColoredCube.html" target="_blank"><img src="thumb/basicColoredCube.png" alt=""></a>
         <h5>Basic Colored Cube</h5>
+    </div>
+    
+    <div class="item">
+        <a href="examples/basicCubeCustomShader.html" target="_blank"><img src="thumb/basicCubeCustomShader.png" alt=""></a>
+        <h5>Cube with Custom Shader</h5>
+    </div>
+    
+    <div class="item">
+        <a href="examples/basicCubeWave.html" target="_blank"><img src="thumb/basicCubeWave.png" alt=""></a>
+        <h5>Cube Wave Animation</h5>
+    </div>
+    
+    <div class="item">
+        <a href="examples/basicFlyingCubes.html" target="_blank"><img src="thumb/basicFlyingCubes.png" alt=""></a>
+        <h5>Flying Cubes</h5>
     </div>
     
     <div class="item">
@@ -63,6 +93,11 @@
     <div class="item">
         <a href="examples/basicModelAnimation.html" target="_blank"><img src="thumb/basicModelAnimation.png" alt=""></a>
         <h5>Load an Animated Model - Samba Dancing</h5>
+    </div>
+    
+    <div class="item">
+        <a href="examples/basicModelLogo.html" target="_blank"><img src="thumb/basicModelLogo.png" alt=""></a>
+        <h5>ClayGL Logo Model</h5>
     </div>
     
     <div class="item">
@@ -91,13 +126,18 @@
     </div>
     
     <div class="item">
-        <a href="examples/basicTriangle.html" target="_blank"><img src="thumb/basicTriangle.png" alt=""></a>
-        <h5>Basic Triangle</h5>
+        <a href="examples/basicSpotLightShadow.html" target="_blank"><img src="thumb/basicSpotLightShadow.png" alt=""></a>
+        <h5>Use Spot Light</h5>
     </div>
     
     <div class="item">
-        <a href="examples/cubeCustomShader.html" target="_blank"><img src="thumb/cubeCustomShader.png" alt=""></a>
-        <h5>Cube with Custom Shader</h5>
+        <a href="examples/basicStandardMaterial.html" target="_blank"><img src="thumb/basicStandardMaterial.png" alt=""></a>
+        <h5>Standard Material</h5>
+    </div>
+    
+    <div class="item">
+        <a href="examples/basicTriangle.html" target="_blank"><img src="thumb/basicTriangle.png" alt=""></a>
+        <h5>Basic Triangle</h5>
     </div>
     
 </div>

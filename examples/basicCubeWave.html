@@ -11,7 +11,7 @@
     <script src="../lib/codemirror.min.js"></script>
     <script src="../lib/mode-javascript.js"></script>
     <link rel="stylesheet" href="../lib/codemirror.css">
-    <title>Basic Geometries</title>
+    <title>Cube Wave Animation</title>
     <style>
         body {
             margin: 0px;
@@ -82,49 +82,64 @@
     <img src="../img/logo.svg" id="logo" alt="">
 </div>
 <div id="main">
-    <h1>Basic Geometries</h1>
+    <h1>Cube Wave Animation</h1>
     <div id="viewport"></div>
 
-    <script id="main-script">var app = clay.application.create('#viewport', {
+    <script id="main-script">var CUBE_COUNT = 24;
+
+clay.application.create('#viewport', {
+
+    graphic: {
+        shadow: true
+    },
 
     init: function (app) {
-        // Create a perspective camera.
-        this._camera = app.createCamera([0, 2, 5], [0, 0, 0]);
 
-        // Create a white directional light.
-        app.createDirectionalLight([-1, -2, -1], '#fff', 1);
+        var camera = app.createCamera([6, 15, 15], [0, 0, 0]);
 
-        // Create a ground with plane
-        var groundPlane = app.createPlane();
-        // Scale the plane to 10x10 on x and y dimensions.
-        groundPlane.scale.set(10, 10, 1);
-        // Defaultly plane is facing the camera. So rotate it to face the top.
-        groundPlane.rotation.rotateX(-Math.PI / 2);
-        groundPlane.position.y = -1;
-        groundPlane.material.set('color', '#333');
+        // Create cubes
+        var cubes = [];
+        for (var i = 0; i < CUBE_COUNT; i++) {
+            for (var j = 0; j < CUBE_COUNT; j++) {
+                var cubeMesh = app.createCube({
+                    // Color can be a RGB array
+                    color: [i / CUBE_COUNT, j / CUBE_COUNT, 0.5]
+                });
+                cubeMesh.position.set(i - CUBE_COUNT / 2, 0, j - CUBE_COUNT / 2);
+                cubeMesh.scale.set(0.5, 0, 0.5);
 
-        // Create geometries
+                cubes.push(cubeMesh);
+            }
+        }
+        this._cubes = cubes;
 
-        // Create a cube
-        var cube = app.createCube();
-        // Create a sphere and put it on the right of the cube
-        var sphere = app.createSphere();
-        sphere.position.x = 3;
-        // Create a cone and put it on the left of the cube.
-        // createMesh is a more general method to create a mesh with any geometry and material.
-        // And you can found more procedural geometry constructor under `clay.geometry`
-        var cone = app.createMesh(new clay.geometry.Cone());
-        cone.position.x = -3;
+        // Create lights.
+        var directionalLight = app.createDirectionalLight([-1, -1, -1]);
+        directionalLight.shadowResolution = 1024;
+        this._pointLight = app.createPointLight([-30, 30, 0], 100, '#fff', 1);
+
+
+        this._control = new clay.plugin.OrbitControl({
+            target: camera,
+            domElement: app.container
+        });
     },
 
     loop: function (app) {
-        // Do nothing in loop
+        this._control.update(app.deltaTime);
+
+        this._cubes.forEach(function (cube, idx) {
+            var x = Math.round(idx / CUBE_COUNT);
+            var y = idx % CUBE_COUNT;
+            // cube y is animated in sin/cos wave.
+            cube.scale.y = (Math.sin(x / 3 + app.elapsedTime / 1000) * Math.cos(y / 3 + app.elapsedTime / 1000) + 1) * 2;
+        });
     }
 });</script>
 
     <h2><a href="#intro"># Itroduction</a></h2>
     <div id="intro">
-        <p>This example demonstrates how to create procedural geometries like sphere, cube, plane in ClayGL</p>
+        <p>This examples demonstrates how to animate hundreds of cubes like waves.</p>
 
     </div>
 

@@ -31,6 +31,16 @@
             background-color: #fff;
             /* box-shadow: 0px 0px 20px rgba(0,0,0,0.1); */
         }
+        #nav {
+            height: 40px;
+            border-bottom: 1px solid rgba(0,0,0,0.2);
+            text-align: left;
+        }
+        #nav #logo {
+            height: 20px;
+            margin-left: 30px;
+            margin-top: 10px;
+        }
         h1 {
             text-align: left;
             margin-top: 50px;
@@ -68,6 +78,9 @@
     </style>
 </head>
 <body>
+<div id="nav">
+    <img src="../img/logo.svg" id="logo" alt="">
+</div>
 <div id="main">
     <h1>Basic Colored Cube</h1>
     <div id="viewport"></div>
@@ -86,7 +99,7 @@
         }
         function createCube() {
             var randomColor = makeRandomColor();
-            var cube = app.createCube(1, {
+            var cube = app.createCube({
                 color: randomColor
             });
             cube
