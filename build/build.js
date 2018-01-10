@@ -15,6 +15,7 @@ function parseMarkdownExampleLinks() {
 }
 
 var BUILD_THUMBS = true;
+var BASE_URL = 'http://127.0.0.1/claygl-examples/';
 
 (async () => {
     // https://github.com/GoogleChrome/puppeteer/issues/1260
@@ -55,12 +56,15 @@ var BUILD_THUMBS = true;
             var mdText = fs.readFileSync(fileName, 'utf-8');
             var fmResult = fm(mdText);
 
+            var extraScripts = fmResult.attributes.scripts ? fmResult.attributes.scripts.split(',').map(str => str.trim()) : [];
+
             var descHTML = marked(fmResult.body);
 
             var finalHTML = basicRender({
                 title: fmResult.attributes.title,
                 description: descHTML,
-                mainCode: jsCode
+                mainCode: jsCode,
+                scripts: extraScripts
             });
 
             fs.writeFileSync(__dirname + '/../examples/' + basename + '.html', finalHTML, 'utf-8');
@@ -68,14 +72,17 @@ var BUILD_THUMBS = true;
             // Do screenshot
             if (BUILD_THUMBS && screenshotBlackList.indexOf(basename) < 0) {
                 var page = await browser.newPage();
-                var url = `http://127.0.0.1/claygl-examples/build/screenshot.html?${basename}`;
+                var url = `${BASE_URL}/build/screenshot.html?${basename}`;
+                for (var scriptUrl of extraScripts) {
+                    url += ',' + scriptUrl;
+                }
                 page.on('pageerror', function (err) {
                     console.log(err.toString());
                 });
                 page.on('console', function (msg) {
                     console.log(msg.text);
                 });
-                console.log(url);
+                console.log(basename);
                 // https://stackoverflow.com/questions/46160929/puppeteer-wait-for-all-images-to-load-then-take-screenshot
                 await page.goto(url, {'waitUntil' : 'networkidle0'});
                 await page.screenshot({path: __dirname + '/../thumb/' + basename + '.png' });
