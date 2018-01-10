@@ -20,17 +20,17 @@ var app = clay.application.create('#viewport', {
         this._pointLight1.castShadow = true;
         this._pointLight2.castShadow = true;
 
-        app.createSphere(20, {
+        app.createSphere({
             shader: 'clay.basic', color: [0, 0, 1]
         }, this._pointLight1);
 
-        app.createSphere(20, {
+        app.createSphere({
             shader: 'clay.basic', color: [0, 1, 0]
         }, this._pointLight2);
 
 
         // Create a room.
-        var cube = app.createCubeInside(1, {
+        var cube = app.createCubeInside({
             roughness: 1,
             color: [0.3, 0.3, 0.3]
         });

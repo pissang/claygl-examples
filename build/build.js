@@ -36,6 +36,12 @@ var BUILD_THUMBS = true;
     var basicRender = etpl.compile(fs.readFileSync('./templates/basic.html', 'utf-8'));
     var indexRender = etpl.compile(fs.readFileSync('./templates/index.html', 'utf-8'));
 
+
+    // TODO puppeteer will have Navigation Timeout Exceeded: 30000ms exceeded error in these examples.
+    var screenshotBlackList = [
+        'basicFlyingCubes'
+    ];
+
     glob(__dirname + '/../examples-src/*/README.md', async function (err, files) {
 
         var exampleList = [];
@@ -60,22 +66,22 @@ var BUILD_THUMBS = true;
             fs.writeFileSync(__dirname + '/../examples/' + basename + '.html', finalHTML, 'utf-8');
 
             // Do screenshot
-            if (BUILD_THUMBS) {
+            if (BUILD_THUMBS && screenshotBlackList.indexOf(basename) < 0) {
                 var page = await browser.newPage();
                 var url = `http://127.0.0.1/claygl-examples/build/screenshot.html?${basename}`;
                 page.on('pageerror', function (err) {
                     console.log(err.toString());
-                })
+                });
                 page.on('console', function (msg) {
                     console.log(msg.text);
-                })
+                });
                 console.log(url);
                 // https://stackoverflow.com/questions/46160929/puppeteer-wait-for-all-images-to-load-then-take-screenshot
                 await page.goto(url, {'waitUntil' : 'networkidle0'});
                 await page.screenshot({path: __dirname + '/../thumb/' + basename + '.png' });
                 await page.close();
-
             }
+
             exampleList.push({
                 category: fmResult.attributes.category || 'basic',
                 name: basename,

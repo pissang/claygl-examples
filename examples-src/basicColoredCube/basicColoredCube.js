@@ -12,7 +12,7 @@ var app = clay.application.create('#viewport', {
         }
         function createCube() {
             var randomColor = makeRandomColor();
-            var cube = app.createCube(1, {
+            var cube = app.createCube({
                 color: randomColor
             });
             cube

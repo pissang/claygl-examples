@@ -23,7 +23,7 @@ var app = clay.application.create('#viewport', {
         // Create a orthographic camera
         this._camera = app.createCamera([0, 2, 5], [0, 0, 0]);
         // Create a empty geometry and set the triangle vertices
-        this._cube = app.createCube(1, {
+        this._cube = app.createCube({
             shader: new clay.Shader(vertexShader, fragmentShader)
         });
     },
