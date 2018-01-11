@@ -10,6 +10,9 @@
     <script src="../lib/claygl.js"></script>
     <script src="../lib/codemirror.min.js"></script>
     <script src="../lib/mode-javascript.js"></script>
+    {{ for: ${scripts} as ${script}, ${idx} }}
+    <script src="${script}"></script>
+    {{ /for }}
     <link rel="stylesheet" href="../lib/codemirror.css">
     <title>${title}</title>
     <style>
@@ -74,6 +77,9 @@
         }
         h1 a:hover, h2 a:hover, h3 a:hover {
             text-decoration: underline;
+        }
+        .dg.ac {
+            top: 40px!important;
         }
     </style>
 </head>

@@ -16,11 +16,20 @@
 <div id="viewport"></div>
 
 <script>
-    var exampleName = window.location.search.slice(1);
+    var scripts = window.location.search.slice(1).split(',');
+    var exampleName = scripts[0];
     if (exampleName) {
-        var script = document.createElement('script');
-        script.src = `../examples-src/${exampleName}/${exampleName}.js`
-        document.body.appendChild(script);
+        for (var i = 1; i < scripts.length; i++) {
+            var scriptTag = document.createElement('script');
+            scriptTag.src = scripts[i];
+            scriptTag.async = false;
+            document.body.appendChild(scriptTag);
+        }
+
+        var scriptTag = document.createElement('script');
+        scriptTag.async = false;
+        scriptTag.src = `../examples-src/${exampleName}/${exampleName}.js`
+        document.body.appendChild(scriptTag);
     }
 </script>
 </body>
