@@ -7,11 +7,16 @@
     <script src="../lib/pace.min.js"></script>
     <link rel="stylesheet" href="../lib/pace.css">
 
-    <script src="../lib/claygl.js"></script>
+    <script src="../lib/jquery.min.js"></script>
+    <script src="../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap.min.css">
+
+    <script src="../lib/claygl.min.js"></script>
     <script src="../lib/codemirror.min.js"></script>
     <script src="../lib/mode-javascript.js"></script>
+    
     <link rel="stylesheet" href="../lib/codemirror.css">
-    <title>Flying Cubes</title>
+    <title>Flying Cubes - ClayGL Example</title>
     <style>
         body {
             margin: 0px;
@@ -31,15 +36,9 @@
             background-color: #fff;
             /* box-shadow: 0px 0px 20px rgba(0,0,0,0.1); */
         }
-        #nav {
-            height: 40px;
-            border-bottom: 1px solid rgba(0,0,0,0.2);
-            text-align: left;
-        }
-        #nav #logo {
+        #logo {
             height: 20px;
             margin-left: 30px;
-            margin-top: 10px;
         }
         h1 {
             text-align: left;
@@ -75,12 +74,33 @@
         h1 a:hover, h2 a:hover, h3 a:hover {
             text-decoration: underline;
         }
+        .dg.ac {
+            top: 40px!important;
+        }
     </style>
 </head>
 <body>
-<div id="nav">
-    <img src="../img/logo.svg" id="logo" alt="">
-</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="http://claygl.xyz">
+        <img src="../img/logo.svg" id="logo" alt="">
+    </a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="http://docs.claygl.xyz/api">Documentation</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="http://examples.claygl.xyz">Examples</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://github.com/pissang/claygl">GitHub</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 <div id="main">
     <h1>Flying Cubes</h1>
     <div id="viewport"></div>

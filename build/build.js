@@ -34,8 +34,8 @@ var BASE_URL = 'http://127.0.0.1/claygl-examples/';
         commandClose: '}}'
     });
 
-    var basicRender = etpl.compile(fs.readFileSync('./templates/basic.html', 'utf-8'));
-    var indexRender = etpl.compile(fs.readFileSync('./templates/index.html', 'utf-8'));
+    var basicRender = etpl.compile(fs.readFileSync(__dirname + '/templates/basic.html', 'utf-8'));
+    var indexRender = etpl.compile(fs.readFileSync(__dirname + '/templates/index.html', 'utf-8'));
 
 
     // TODO puppeteer will have Navigation Timeout Exceeded: 30000ms exceeded error in these examples.

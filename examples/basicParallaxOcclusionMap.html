@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../lib/pace.min.js"></script>
+    <link rel="stylesheet" href="../lib/pace.css">
+
+    <script src="../lib/jquery.min.js"></script>
+    <script src="../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap.min.css">
+
+    <script src="../lib/claygl.min.js"></script>
+    <script src="../lib/codemirror.min.js"></script>
+    <script src="../lib/mode-javascript.js"></script>
+    
+    <script src="../lib/dat.gui.js"></script>
+    
+    <link rel="stylesheet" href="../lib/codemirror.css">
+    <title>Parallax Occlusion Map - ClayGL Example</title>
+    <style>
+        body {
+            margin: 0px;
+            text-align: center;
+
+            background-color: #fff;
+        }
+        #main {
+            width: 960px;
+            margin: 0 auto;
+        }
+        #viewport {
+            width: 1000px;
+            margin-left: -20px;
+            height: 500px;
+
+            background-color: #fff;
+            /* box-shadow: 0px 0px 20px rgba(0,0,0,0.1); */
+        }
+        #logo {
+            height: 20px;
+            margin-left: 30px;
+        }
+        h1 {
+            text-align: left;
+            margin-top: 50px;
+        }
+        h2 {
+            margin-top: 50px;
+        }
+        h1, h2, h3, h4, h5 {
+            font-family: "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Arial,sans-serif
+        }
+        #intro, h2, #main-code {
+            text-align: left;
+        }
+        #intro {
+            font-family: Georgia,Cambria,"Times New Roman",Times,serif;
+            font-size: 20px;
+            line-height: 32px;
+        }
+        #main-code {
+            margin-bottom: 100px;
+        }
+        .CodeMirror {
+            height: auto;
+            font-family: Monaco, monospace;
+            font-size: 13px;
+            line-height: 20px;
+        }
+        h1 a, h2 a, h3 a {
+            color: #000;
+            text-decoration: none;
+        }
+        h1 a:hover, h2 a:hover, h3 a:hover {
+            text-decoration: underline;
+        }
+        .dg.ac {
+            top: 40px!important;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="http://claygl.xyz">
+        <img src="../img/logo.svg" id="logo" alt="">
+    </a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="http://docs.claygl.xyz/api">Documentation</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="http://examples.claygl.xyz">Examples</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://github.com/pissang/claygl">GitHub</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div id="main">
+    <h1>Parallax Occlusion Map</h1>
+    <div id="viewport"></div>
+
+    <script id="main-script">var config = {
+    scale: 0.01
+};
+
+var gui = new dat.GUI();
+gui.add(config, 'scale', 0, 0.1);
+
+var app = clay.application.create('#viewport', {
+
+    init: function (app) {
+
+        this._camera = app.createCamera([0, 1.5, 3.5], [0, 0, 0]);
+
+        this._cube = app.createCube({
+            parallaxOcclusionMap: '../assets/textures/depth.png',
+            diffuseMap: '../assets/textures/diffuse2.png',
+            normalMap: '../assets/textures/normal.png'
+        });
+
+        this._mainLight = app.createDirectionalLight([-1, -1, -1]);
+        app.createAmbientLight('#fff', 0.3);
+    },
+
+    loop: function (app) {
+        this._cube.material.set('parallaxOcclusionScale', config.scale);
+        // Simply rotating the cube every frame.
+        this._cube.rotation.rotateY(app.frameTime / 1000);
+    }
+});</script>
+
+    <h2><a href="#intro"># Itroduction</a></h2>
+    <div id="intro">
+        <p>This example demonstrates how to add parallax occlusion map, normal map and diffuse map to a material.</p>
+
+    </div>
+
+
+    <h2><a href="#main-code"># Main Code</a></h2>
+
+    <div id="main-code"></div>
+
+    <script>
+        (function () {
+            var editor = CodeMirror(document.getElementById('main-code'), {
+                value: document.getElementById('main-script').textContent,
+                lineNumbers: true,
+                mode: 'javascript',
+                readOnly: true
+            })
+        })();
+    </script>
+</div>
+</body>
+</html>
