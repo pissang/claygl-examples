@@ -7,7 +7,8 @@ clay.application.create('#viewport', {
 
     init: function (app) {
 
-        var camera = app.createCamera([0, 7, 25], [0, 2, 0]);
+        var camera = app.createCamera([0, 15, 50], [0, 2, 0]);
+        camera.fov = 30;
 
         this._createJumpingCube(app);
 
@@ -37,7 +38,7 @@ clay.application.create('#viewport', {
 
         app.timeline.animate(props, { loop: true })
             .when(500, {    // Jump
-                y: 10, rot: Math.PI
+                y: 15, rot: Math.PI
             }, 'circularOut')
             .when(1000, {   // Fall
                 y: 0, sx: 1, sy: 1, rot: Math.PI * 2
