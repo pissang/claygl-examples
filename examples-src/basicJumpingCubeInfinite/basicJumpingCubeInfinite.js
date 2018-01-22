@@ -13,16 +13,12 @@ clay.application.create('#viewport', {
 
         this._createMovingPlatform(app);
 
-        // Create ground
-        // var plane = app.createPlane();
-        // plane.castShadow = false;
-        // plane.rotation.rotateX(-Math.PI / 2);
-        // plane.scale.set(10, 10, 1);
-
         // Create lights
         var dirLight = app.createDirectionalLight([-1, -3, -1], '#fff', 2);
         dirLight.shadowResolution = 1024;
-        app.createAmbientLight('#fff', 0.5);
+
+        app.createPointLight([-20, 10, 0], 50, '#fff', 2);
+        // app.createAmbientLight('#fff', 0.5);
     },
 
     _createJumpingCube: function (app) {
@@ -70,7 +66,7 @@ clay.application.create('#viewport', {
         var color = 'skyblue';
         for (var i = 0; i < 9; i++) {
             var cylinder = app.createMesh(cylinderGeo, {
-                color: color
+                // color: color
             }, platformRoot);
             cylinder.castShadow = false;
             cylinder.scale.set(4, 0.3, 4);
