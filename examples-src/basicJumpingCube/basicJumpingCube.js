@@ -29,14 +29,13 @@ clay.application.create('#viewport', {
                 y: 0, sx: 1, sy: 1, rot: Math.PI * 2
             }, 'circularIn')
             .when(1300, {
-                y: 0, sx: 2, sy: 0.5
+                sx: 2, sy: 0.5
             }, 'circularOut')
             .when(1400, {
-                y: 0, sx: 2, sy: 0.5
+                sx: 2, sy: 0.5
             })
             .when(1700, {
-                // Must have all properties in last frame!
-                y: 0, sx: 1, sy: 1, rot: Math.PI * 2
+                sx: 1, sy: 1, rot: Math.PI * 2
             }, 'circularIn')
             .during(function () {
                 movingNode.position.y = props.y;

@@ -31,7 +31,7 @@ var app = clay.application.create('#viewport', {
         return app.createAmbientCubemapLight('../assets/textures/hdr/pisa.hdr', 1, 0.3).then(function (result) {
             var skybox = new clay.plugin.Skybox({
                 scene: app.scene,
-                environmentMap: result.environmentMap
+                environmentMap: result.specular.cubemap
             });
             // Use high lod to show the `rough` skybox
             skybox.material.set('lod', 3);
