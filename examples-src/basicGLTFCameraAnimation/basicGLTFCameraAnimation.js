@@ -2,7 +2,9 @@ var app = clay.application.create('#viewport', {
 
     graphic: {
         // Enable shadow
-        shadow: true
+        shadow: true,
+        tonemapping: true,
+        linear: true
     },
 
     init: function (app) {
@@ -13,7 +15,7 @@ var app = clay.application.create('#viewport', {
         var light = app.createDirectionalLight([-1, -1, -1], '#fff', 0.7);
         light.shadowResolution = 2048;
 
-        app.createAmbientCubemapLight('../assets/textures/hdr/uffizi-large.hdr', 1, 1).then(function (result) {
+        app.createAmbientCubemapLight('../assets/textures/hdr/uffizi-large.hdr', 1, 0.3, 1).then(function (result) {
             var skybox = new clay.plugin.Skybox({
                 scene: app.scene,
                 environmentMap: result.specular.cubemap
@@ -26,8 +28,11 @@ var app = clay.application.create('#viewport', {
         return app.loadModel('../assets/models/polly/project_polly.gltf', {
             waitTextureLoaded: true
         }).then(function (result) {
-            // Use the moving camera as main camera.
-            app.scene.setMainCamera(result.cameras[1]);
+            // Start camera animation after 3 seconds
+            setTimeout(function () {
+                // Use the moving camera as main camera.
+                app.scene.setMainCamera(result.cameras[1]);
+            }, 4000);
         });
     },
 

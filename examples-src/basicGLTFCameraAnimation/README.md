@@ -1,5 +1,5 @@
 ---
-title: Load an Animated Model - Samba Dancing
+title: Camera Animation in glTF Model
 category: basic
 ---
 
