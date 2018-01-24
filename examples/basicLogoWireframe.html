@@ -71,7 +71,7 @@
 
         app.createAmbientCubemapLight('../assets/textures/hdr/Grand_Canyon_C.hdr', 0.7, 0.3);
 
-        // Load boombox model. return a load promise to make sure the look will be start after model loaded.
+        // Load model. return a load promise to make sure the look will be start after model loaded.
         return app.loadModel('../assets/models/logo/logo.gltf').then((function (result) {
             this._logoRoot = result.rootNode;
 

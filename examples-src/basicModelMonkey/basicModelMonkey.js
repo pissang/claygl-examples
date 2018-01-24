@@ -6,7 +6,7 @@ var app = clay.application.create('#viewport', {
         // Create light
         app.createDirectionalLight([-1, -1, -1]);
 
-        // Load boombox model. return a load promise to make sure the look will be start after model loaded.
+        // Load model. return a load promise to make sure the look will be start after model loaded.
         return app.loadModel('../assets/models/suzanne/suzanne.gltf').then((function (result) {
             this._monkeyRoot = result.rootNode;
             // Set material to red.

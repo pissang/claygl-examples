@@ -8,7 +8,7 @@ var app = clay.application.create('#viewport', {
         // Create camera
         this._camera = app.createCamera([0, 150, 200], [0, 100, 0]);
 
-        // Load boombox model.
+        // Load model.
         app.loadModel('../assets/models/SambaDancing/SambaDancing.gltf');
 
         // Create lights

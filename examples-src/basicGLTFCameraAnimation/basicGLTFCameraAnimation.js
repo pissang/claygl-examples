@@ -24,7 +24,7 @@ var app = clay.application.create('#viewport', {
             skybox.material.set('lod', 3);
         });
 
-        // Load boombox model.
+        // Load model.
         return app.loadModel('../assets/models/polly/project_polly.gltf', {
             waitTextureLoaded: true
         }).then(function (result) {

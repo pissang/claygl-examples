@@ -27,7 +27,7 @@ var app = clay.application.create('#viewport', {
 
         app.createAmbientCubemapLight('../assets/textures/hdr/pisa.hdr', 1, 1);
 
-        // Load boombox model. return a load promise to make sure the look will be start after model loaded.
+        // Load model. return a load promise to make sure the look will be start after model loaded.
         return app.loadModel('../assets/models/DamagedHelmet/DamagedHelmet.gltf');
     },
 

@@ -14,7 +14,7 @@ var app = clay.application.create('#viewport', {
             domElement: app.container
         });
 
-        // Load boombox model. return a load promise to make sure the look will be start after model loaded.
+        // Load model. return a load promise to make sure the look will be start after model loaded.
         return app.loadModel('../assets/models/suzanne/suzanne.gltf');
     },
 
