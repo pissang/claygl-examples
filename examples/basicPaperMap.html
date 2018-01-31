@@ -129,9 +129,9 @@ clay.application.create('#viewport', {
 
         var camera = app.createCamera([4, 4 * Math.sqrt(2), 4], [0, 0, 0], 'orthographic', [4, 4, 20]);
 
-        var light = app.createDirectionalLight([-1, -2, -0.5], '#fff', 1);
+        var light = app.createDirectionalLight([-1, -2, -0.5], '#fff', 0.6);
         light.shadowResolution = 1024;
-        app.createAmbientLight('#fff', 0.1);
+        app.createAmbientLight('#fff', 0.5);
 
         app.container.style.background = 'linear-gradient(rgb(218, 210, 153), rgb(176, 218, 185))';
     },
