@@ -31,7 +31,7 @@ clay.application.create('#viewport', {
 
     loop: function (app) {
         this._camera.rotateAround(
-            clay.math.Vector3.ZERO, clay.math.Vector3.UP, 0.01
+            clay.Vector3.ZERO, clay.Vector3.UP, 0.01
         );
     }
 });

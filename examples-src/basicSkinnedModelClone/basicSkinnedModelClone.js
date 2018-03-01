@@ -74,7 +74,7 @@ var app = clay.application.create('#viewport', {
 
     loop: function (app) {
         this._control.update(app.frameTime);
-        this._pointLight1.rotateAround(new clay.math.Vector3(0, 100, 0), new clay.math.Vector3(0.1, 1, 0.1), 0.1);
-        this._pointLight2.rotateAround(new clay.math.Vector3(0, 120, 0), new clay.math.Vector3(-0.1, 1, -0.2), 0.05);
+        this._pointLight1.rotateAround(new clay.Vector3(0, 100, 0), new clay.Vector3(0.1, 1, 0.1), 0.1);
+        this._pointLight2.rotateAround(new clay.Vector3(0, 120, 0), new clay.Vector3(-0.1, 1, -0.2), 0.05);
     }
 });
