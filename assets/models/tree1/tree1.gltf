@@ -1,0 +1,540 @@
+{
+  "accessors": [
+    {
+      "bufferView": 0,
+      "byteOffset": 0,
+      "componentType": 5126,
+      "count": 1115,
+      "max": [
+        5.835223,
+        19.311586,
+        4.799054
+      ],
+      "min": [
+        -4.454238,
+        0,
+        -5.486816
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 13380,
+      "componentType": 5126,
+      "count": 1115,
+      "max": [
+        1,
+        0.993705,
+        0.969682
+      ],
+      "min": [
+        -0.99583,
+        -0.999138,
+        -0.973744
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 26760,
+      "componentType": 5126,
+      "count": 1115,
+      "max": [
+        5.412649,
+        5.871109
+      ],
+      "min": [
+        -4.183836,
+        -4.392168
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 0,
+      "componentType": 5123,
+      "count": 3762,
+      "max": [
+        1114
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 35680,
+      "componentType": 5126,
+      "count": 1912,
+      "max": [
+        8.09733,
+        20.587978,
+        7.602703
+      ],
+      "min": [
+        -7.146414,
+        5.960683,
+        -7.90891
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 58624,
+      "componentType": 5126,
+      "count": 1912,
+      "max": [
+        0.997211,
+        0.99995,
+        0.985837
+      ],
+      "min": [
+        -0.999564,
+        -0.318838,
+        -0.979857
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 81568,
+      "componentType": 5126,
+      "count": 1912,
+      "max": [
+        0.997205,
+        0.995303
+      ],
+      "min": [
+        0.003202,
+        0.005164999999999975
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 7524,
+      "componentType": 5123,
+      "count": 5088,
+      "max": [
+        1911
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "generator": "ClayGL - fbx2gltf",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 96864,
+      "byteOffset": 0,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 17700,
+      "byteOffset": 96864,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 114564,
+      "uri": "tree1.bin"
+    }
+  ],
+  "materials": [
+    {
+      "name": "polySurface101Mat",
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ],
+      "alphaMode": "OPAQUE",
+      "normalTexture": {
+        "texCoord": 0,
+        "scale": 1,
+        "index": 1
+      },
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 1,
+        "baseColorTexture": {
+          "index": 0,
+          "texCoord": 0
+        }
+      }
+    },
+    {
+      "name": "polySurface1041Mat",
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ],
+      "alphaMode": "OPAQUE",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 1,
+        "baseColorTexture": {
+          "index": 2,
+          "texCoord": 0
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "polySurface101",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0
+        }
+      ]
+    },
+    {
+      "name": "polySurface1041",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 5,
+            "POSITION": 4,
+            "TEXCOORD_0": 6
+          },
+          "indices": 7,
+          "material": 1
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1,
+        2
+      ],
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "name": "tree1a_lod0_root"
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "mesh": 0,
+      "name": "polySurface101"
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "mesh": 1,
+      "name": "polySurface1041"
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "images": [
+    {
+      "uri": "bark1.png"
+    },
+    {
+      "uri": "bark1_nmp.png"
+    },
+    {
+      "uri": "leafs1.png"
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    }
+  ],
+  "samplers": [
+    {
+      "minFilter": 9987,
+      "magFilter": 9729,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "extras": {
+    "clayViewerConfig": {
+      "preZ": true,
+      "materials": [
+        {
+          "name": "polySurface101Mat",
+          "transparent": false,
+          "color": "#ffffff",
+          "emission": "#000000",
+          "alpha": 1,
+          "alphaCutoff": 0,
+          "emissionIntensity": 1,
+          "uvRepeat": [
+            1,
+            1
+          ],
+          "parallaxOcclusionScale": 0.02,
+          "diffuseMap": "bark1.png",
+          "normalMap": "bark1_nmp.png",
+          "parallaxOcclusionMap": "",
+          "emissiveMap": "",
+          "metalness": 0,
+          "roughness": 1,
+          "metalnessMap": "",
+          "roughnessMap": "",
+          "type": "pbrMetallicRoughness",
+          "targetMeshes": [
+            "polySurface101"
+          ]
+        },
+        {
+          "name": "polySurface1041Mat",
+          "transparent": false,
+          "color": "#ffffff",
+          "emission": "#000000",
+          "alpha": 1,
+          "alphaCutoff": 0.07,
+          "emissionIntensity": 1,
+          "uvRepeat": [
+            1,
+            1
+          ],
+          "parallaxOcclusionScale": 0.02,
+          "diffuseMap": "leafs1.png",
+          "normalMap": "",
+          "parallaxOcclusionMap": "",
+          "emissiveMap": "",
+          "metalness": 0,
+          "roughness": 1,
+          "metalnessMap": "",
+          "roughnessMap": "",
+          "type": "pbrMetallicRoughness",
+          "targetMeshes": [
+            "polySurface1041"
+          ]
+        }
+      ],
+      "takes": [],
+      "textureFlipY": false,
+      "zUpToYUp": false,
+      "shadow": true,
+      "environment": "auto",
+      "viewControl": {
+        "center": [
+          -0.027047795279757827,
+          1.5742291051496353,
+          0.11704644116681645
+        ],
+        "alpha": 14.30422486846346,
+        "beta": -12.01891535448881,
+        "distance": 17.76971114491913
+      },
+      "ground": {
+        "show": true,
+        "grid": false
+      },
+      "mainLight": {
+        "shadow": true,
+        "shadowQuality": "medium",
+        "intensity": 0.8,
+        "color": "#fff",
+        "alpha": 45,
+        "beta": 45,
+        "$padAngle": [
+          0.25,
+          0.5
+        ]
+      },
+      "secondaryLight": {
+        "shadow": true,
+        "shadowQuality": "medium",
+        "intensity": 0,
+        "color": "#fff",
+        "alpha": 60,
+        "beta": -50,
+        "$padAngle": [
+          -0.2777777777777778,
+          0.6666666666666666
+        ]
+      },
+      "tertiaryLight": {
+        "shadow": true,
+        "shadowQuality": "medium",
+        "intensity": 0,
+        "color": "#fff",
+        "alpha": 89,
+        "beta": 0,
+        "$padAngle": [
+          0,
+          0.9888888888888889
+        ]
+      },
+      "ambientLight": {
+        "intensity": 0,
+        "color": "#fff"
+      },
+      "ambientCubemapLight": {
+        "texture": "./asset/texture/Old_Industrial_Hall.hdr",
+        "$texture": "Old_Industrial_Hall",
+        "$textureOptions": [
+          "pisa",
+          "Barce_Rooftop_C",
+          "Factory_Catwalk",
+          "Grand_Canyon_C",
+          "Ice_Lake",
+          "Hall",
+          "Old_Industrial_Hall"
+        ],
+        "exposure": 3,
+        "diffuseIntensity": 0.3,
+        "specularIntensity": 0.5
+      },
+      "postEffect": {
+        "enable": true,
+        "bloom": {
+          "enable": true,
+          "intensity": 0.1
+        },
+        "depthOfField": {
+          "enable": false,
+          "focalDistance": 4,
+          "focalRange": 1,
+          "blurRadius": 5,
+          "fstop": 10,
+          "quality": "medium",
+          "$qualityOptions": [
+            "low",
+            "medium",
+            "high",
+            "ultra"
+          ]
+        },
+        "screenSpaceAmbientOcclusion": {
+          "enable": false,
+          "radius": 1.5,
+          "quality": "medium",
+          "intensity": 1,
+          "$qualityOptions": [
+            "low",
+            "medium",
+            "high",
+            "ultra"
+          ]
+        },
+        "screenSpaceReflection": {
+          "enable": false,
+          "physical": false,
+          "quality": "medium",
+          "maxRoughness": 0.8,
+          "$qualityOptions": [
+            "low",
+            "medium",
+            "high",
+            "ultra"
+          ]
+        },
+        "colorCorrection": {
+          "enable": true,
+          "exposure": 0,
+          "brightness": 0,
+          "contrast": 1,
+          "saturation": 1,
+          "lookupTexture": ""
+        },
+        "FXAA": {
+          "enable": false
+        }
+      }
+    }
+  },
+  "extensionsUsed": [
+    "KHR_materials_pbrSpecularGlossiness"
+  ]
+}

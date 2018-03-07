@@ -27,10 +27,16 @@ var app = clay.application.create('#viewport', {
 
         this._initLights(app);
         // Load model. return a load promise to make sure the look will be start after model loaded.
-        return app.loadModel('../assets/models/sponza/sponza.gltf').then((function (result) {
+        return app.loadModel('../assets/models/sponza/sponza.gltf', {
+            waitTextureLoaded: true
+        }).then((function (result) {
             this._sponzaRoot = result.rootNode;
             result.textures.forEach(function (texture) {
                 texture.anisotropic = 8;
+            });
+            result.materials.forEach(function (material) {
+                material.define('fragment', 'ALPHA_TEST');
+                material.set('alphaCutoff', 0.9);
             });
         }).bind(this));
     },
