@@ -21,7 +21,7 @@ var app = clay.application.create('#viewport', {
         });
 
         // Create camera
-        this._camera = app.createCamera([-10, 15, 20], [0, 5, 0]);
+        this._camera = app.createCamera([-10, 15, 20], [0, 5, 0], 'orthographic', [35, app.height / app.width * 35, 50]);
 
         this._control = new clay.plugin.OrbitControl({
             target: this._camera,
