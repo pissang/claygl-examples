@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../lib/pace.min.js"></script>
+    <link rel="stylesheet" href="../lib/pace.css">
+
+    <script src="../lib/jquery.min.js"></script>
+    <script src="../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap.min.css">
+
+    <script src="../lib/claygl.min.js"></script>
+    <script src="../lib/codemirror.min.js"></script>
+    <script src="../lib/mode-javascript.js"></script>
+    
+    <script src="../lib/claygl-advanced-renderer.js"></script>
+    
+    <link rel="stylesheet" href="../lib/codemirror.css">
+    <title>Monument with Advanced Renderer - ClayGL Example</title>
+    <link rel="stylesheet" href="../css/example.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="http://claygl.xyz">
+        <img src="../img/logo.svg" id="logo" alt="">
+    </a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="http://docs.claygl.xyz/api">Documentation</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="http://examples.claygl.xyz">Examples</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://github.com/pissang/claygl">GitHub</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://github.com/pissang/claygl/releases">Download</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div id="main">
+    <h1>Monument with Advanced Renderer</h1>
+    <div id="viewport"></div>
+
+    <script id="main-script">var app = clay.application.create('#viewport', {
+
+    autoRender: false,
+
+    init: function (app) {
+
+        var adr = this._advancedRenderer = new ClayAdvancedRenderer(app.renderer, app.scene, app.timeline, {
+            shadow: {
+                enable: true
+            },
+            postEffect: {
+                bloom: {
+                    enable: false
+                },
+                screenSpaceAmbientOcclusion: {
+                    enable: true,
+                    radius: 2,
+                    intensity: 1.2
+                }
+            }
+        });
+
+        // Create camera
+        this._camera = app.createCamera([-10, 15, 20], [0, 5, 0]);
+
+        this._control = new clay.plugin.OrbitControl({
+            target: this._camera,
+            domElement: app.container,
+            timeline: app.timeline
+        });
+
+        // Only re-render when the control is updated.
+        this._control.on('update', function () {
+            adr.render();
+        }, this);
+
+        // Load model.
+        app.loadModel('../assets/models/monument/monu16.glb').then(function (result) {
+            result.rootNode.scale.set(0.1, 0.1, 0.1);
+            adr.render();
+        });
+
+        app.createAmbientCubemapLight('../assets/textures/hdr/pisa.hdr', 0.5, 0.5).then(function (result) {
+            adr.render();
+        });
+
+        // Create lights
+        app.createDirectionalLight([-1, -1, -1], '#fff', 2);
+    },
+
+    loop: function (app) {}
+});</script>
+
+    <h2><a href="#intro"># Itroduction</a></h2>
+    <div id="intro">
+        <p>Use <a href="https://github.com/pissang/claygl-advanced-renderer">ClayGL Advanced Renderer</a> for better rendering quality.</p>
+<p>Models are from <a href="https://github.com/ephtracy/voxel-model/tree/master/vox/monument">Magica Voxel</a> and converted with <a href="https://github.com/pissang/clay-viewer">Clay Viewer</a></p>
+
+    </div>
+
+
+    <h2><a href="#main-code"># Main Code</a></h2>
+
+    <div id="main-code"></div>
+
+    <script>
+        (function () {
+            var editor = CodeMirror(document.getElementById('main-code'), {
+                value: document.getElementById('main-script').textContent,
+                lineNumbers: true,
+                mode: 'javascript',
+                readOnly: true
+            })
+        })();
+    </script>
+</div>
+</body>
+</html>
