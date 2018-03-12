@@ -122,7 +122,6 @@ var app = clay.application.create('#viewport', {
         });
 
         this._control.update(app.frameTime);
-        this._shadowPass.render(app.renderer, app.scene, this._camera);
         this._dRenderer.render(app.renderer, app.scene, this._camera);
     }
 });</script>
