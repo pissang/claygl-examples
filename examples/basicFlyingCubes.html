@@ -135,8 +135,9 @@ var app = clay.application.create('#viewport', {
         this._pointLight2.rotateAround(new clay.Vector3(0, 120, 0), new clay.Vector3(-0.1, 1, -0.2), 0.05);
 
         var frameTimeSecond = app.frameTime / 1000;
+        var upVector = clay.Vector3.UP;
         this._cubes.forEach(function (cube) {
-            cube.rotateAround(cube.center, clay.Vector3.UP, cube.moveSpeed * frameTimeSecond);
+            cube.rotateAround(cube.center, upVector, cube.moveSpeed * frameTimeSecond);
             cube.rotation.rotateX(cube.rotateSpeed * frameTimeSecond).rotateY(cube.rotateSpeed * frameTimeSecond)
         });
     }

@@ -6,7 +6,7 @@ var app = clay.application.create('#viewport', {
 
     init: function (app) {
         // Create camera
-        this._camera = app.createCamera([0, 20, 25], [0, 10, 0]);
+        this._camera = app.createCamera([0, 20, 30], [0, 10, 0]);
 
         // Create light
         var light = app.createDirectionalLight([-1, -3, -1]);

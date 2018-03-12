@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../lib/pace.min.js"></script>
+    <link rel="stylesheet" href="../lib/pace.css">
+
+    <script src="../lib/jquery.min.js"></script>
+    <script src="../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap.min.css">
+
+    <script src="../lib/claygl.min.js"></script>
+    <script src="../lib/codemirror.min.js"></script>
+    <script src="../lib/mode-javascript.js"></script>
+    
+    <script src="../lib/dat.gui.js"></script>
+    
+    <link rel="stylesheet" href="../lib/codemirror.css">
+    <title>Sponza with deferred rendering - ClayGL Example</title>
+    <link rel="stylesheet" href="../css/example.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="http://claygl.xyz">
+        <img src="../img/logo.svg" id="logo" alt="">
+    </a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="http://docs.claygl.xyz/api">Documentation</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="http://examples.claygl.xyz">Examples</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://github.com/pissang/claygl">GitHub</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://github.com/pissang/claygl/releases">Download</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div id="main">
+    <h1>Sponza with deferred rendering</h1>
+    <div id="viewport"></div>
+
+    <script id="main-script">var BOX = [
+    new clay.Vector3(1028, 551, 396),
+    new clay.Vector3(-1028, 150, -396)
+];
+
+var app = clay.application.create('#viewport', {
+
+    // Disable default forward render.
+    autoRender: false,
+
+    init: function (app) {
+
+        // Create camera
+        this._camera = app.createCamera([0, 100, 0], [-10, 100, 0]);
+        this._camera.far = 10000;
+
+        this._shadowPass = new clay.prePass.ShadowMap();
+        this._dRenderer = new clay.deferred.Renderer({
+            shadowMapPass: this._shadowPass
+        });
+
+        this._control = new clay.plugin.FreeControl({
+            target: this._camera,
+            domElement: app.container,
+            speed: 10
+        });
+
+        this._initLights(app);
+        // Load model. return a load promise to make sure the look will be start after model loaded.
+        return app.loadModel('../assets/models/sponza/sponza.gltf', {
+            waitTextureLoaded: true
+        }).then((function (result) {
+            this._sponzaRoot = result.rootNode;
+            result.textures.forEach(function (texture) {
+                texture.anisotropic = 8;
+            });
+            result.materials.forEach(function (material) {
+                material.define('fragment', 'ALPHA_TEST');
+                material.set('alphaCutoff', 0.9);
+            });
+        }).bind(this));
+    },
+
+    _initLights: function (app) {
+
+        var randomPos = clay.Value.random3D(BOX[0], BOX[1]);
+
+        this._lights = [];
+        for (var i = 0; i < 100; i++) {
+            var pointLight = app.createPointLight([0, 0, 0], 500, [Math.random(), Math.random(), Math.random()]);
+            randomPos.get(pointLight.position);
+
+            var sphere = app.createSphere({}, pointLight);
+            sphere.scale.set(2, 2, 2);
+
+            pointLight.center = new clay.Vector3(0, pointLight.position.y, 0);
+            pointLight.moveSpeed = Math.random();
+
+            this._lights.push(pointLight);
+        }
+
+        app.createAmbientLight('#fff', 0.2);
+    },
+
+    loop: function (app) {
+        var frameTimeSecond = app.frameTime / 1000;
+        var upVector = clay.Vector3.UP;
+        this._lights.forEach(function (light) {
+            light.rotateAround(light.center, upVector, light.moveSpeed * frameTimeSecond);
+        });
+
+        this._control.update(app.frameTime);
+        this._shadowPass.render(app.renderer, app.scene, this._camera);
+        this._dRenderer.render(app.renderer, app.scene, this._camera);
+    }
+});</script>
+
+    <h2><a href="#intro"># Itroduction</a></h2>
+    <div id="intro">
+        
+    </div>
+
+
+    <h2><a href="#main-code"># Main Code</a></h2>
+
+    <div id="main-code"></div>
+
+    <script>
+        (function () {
+            var editor = CodeMirror(document.getElementById('main-code'), {
+                value: document.getElementById('main-script').textContent,
+                lineNumbers: true,
+                mode: 'javascript',
+                readOnly: true
+            })
+        })();
+    </script>
+</div>
+</body>
+</html>
