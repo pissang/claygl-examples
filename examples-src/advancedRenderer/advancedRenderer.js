@@ -13,6 +13,7 @@ var app = clay.application.create('#viewport', {
                     enable: false
                 },
                 screenSpaceAmbientOcclusion: {
+                    temporalFilter: true,
                     enable: true,
                     radius: 2,
                     intensity: 1.2
@@ -26,7 +27,8 @@ var app = clay.application.create('#viewport', {
         this._control = new clay.plugin.OrbitControl({
             target: this._camera,
             domElement: app.container,
-            timeline: app.timeline
+            timeline: app.timeline,
+            zoomSensitivity: 0
         });
 
         // Only re-render when the control is updated.
