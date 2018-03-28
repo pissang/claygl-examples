@@ -23,7 +23,7 @@
     <a class="navbar-brand" href="http://claygl.xyz">
         <img src="./img/logo.svg" id="logo" alt="">
     </a>
-    <div class="collapse navbar-collapse">
+    <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" href="http://docs.claygl.xyz/api">Documentation</a>
@@ -44,157 +44,159 @@
     <h1>
         Examples
     </h1>
-    
-    <div class="item">
-        <a href="examples/advancedDeferredSponza.html" target="_blank"><img src="thumb/advancedDeferredSponza.png" alt=""></a>
-        <h5>Sponza with deferred rendering</h5>
+    <div class="row">
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/advancedDeferredSponza.html" target="_blank"><img src="thumb/advancedDeferredSponza.png" alt=""></a>
+            <h5>Sponza with deferred rendering</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/advancedGBuffer.html" target="_blank"><img src="thumb/advancedGBuffer.png" alt=""></a>
+            <h5>GBuffer</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/advancedRenderer.html" target="_blank"><img src="thumb/advancedRenderer.png" alt=""></a>
+            <h5>Monument with Advanced Renderer</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicColoredCube.html" target="_blank"><img src="thumb/basicColoredCube.png" alt=""></a>
+            <h5>Basic Colored Cube</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicCubeCustomShader.html" target="_blank"><img src="thumb/basicCubeCustomShader.png" alt=""></a>
+            <h5>Cube with Custom Shader</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicCubeWave.html" target="_blank"><img src="thumb/basicCubeWave.png" alt=""></a>
+            <h5>Cube Wave Animation</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicFlyingCubes.html" target="_blank"><img src="thumb/basicFlyingCubes.png" alt=""></a>
+            <h5>Flying Cubes</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicGeometry.html" target="_blank"><img src="thumb/basicGeometry.png" alt=""></a>
+            <h5>Basic Geometries</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicGLTFCameraAnimation.html" target="_blank"><img src="thumb/basicGLTFCameraAnimation.png" alt=""></a>
+            <h5>Camera Animation in glTF Model</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicJumpingCube.html" target="_blank"><img src="thumb/basicJumpingCube.png" alt=""></a>
+            <h5>Jumping Cube</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicJumpingCubeInfinite.html" target="_blank"><img src="thumb/basicJumpingCubeInfinite.png" alt=""></a>
+            <h5>Jumping Cube on Infinite Platform</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicLogoWireframe.html" target="_blank"><img src="thumb/basicLogoWireframe.png" alt=""></a>
+            <h5>ClayGL Logo with Wireframe</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicModelAnimation.html" target="_blank"><img src="thumb/basicModelAnimation.png" alt=""></a>
+            <h5>Load an Animated Model - Samba Dancing</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicModelLogo.html" target="_blank"><img src="thumb/basicModelLogo.png" alt=""></a>
+            <h5>ClayGL Logo Model</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicModelMonkey.html" target="_blank"><img src="thumb/basicModelMonkey.png" alt=""></a>
+            <h5>Load a Model - Suzanne Monkey</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicModelPBR.html" target="_blank"><img src="thumb/basicModelPBR.png" alt=""></a>
+            <h5>Load a PBR Model</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicOrbitControl.html" target="_blank"><img src="thumb/basicOrbitControl.png" alt=""></a>
+            <h5>Use Orbit Camera Control</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicPanorama.html" target="_blank"><img src="thumb/basicPanorama.png" alt=""></a>
+            <h5>Basic Panorama</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicPanoramaHDR.html" target="_blank"><img src="thumb/basicPanoramaHDR.png" alt=""></a>
+            <h5>Basic HDR Panorama</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicPaperMap.html" target="_blank"><img src="thumb/basicPaperMap.png" alt=""></a>
+            <h5>3D Paper Map</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicParallaxOcclusionMap.html" target="_blank"><img src="thumb/basicParallaxOcclusionMap.png" alt=""></a>
+            <h5>Parallax Occlusion Map</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicParametricWaterDrop.html" target="_blank"><img src="thumb/basicParametricWaterDrop.png" alt=""></a>
+            <h5>Water Drop Drawn with Parametric Surface</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicPointLightShadow.html" target="_blank"><img src="thumb/basicPointLightShadow.png" alt=""></a>
+            <h5>Shadow of Point Light on the Samba Dancing Model</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicRotatingCube.html" target="_blank"><img src="thumb/basicRotatingCube.png" alt=""></a>
+            <h5>Basic Rotating Cube</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicSkinnedModelClone.html" target="_blank"><img src="thumb/basicSkinnedModelClone.png" alt=""></a>
+            <h5>Dancing Groups</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicSkybox.html" target="_blank"><img src="thumb/basicSkybox.png" alt=""></a>
+            <h5>Basic Skybox</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicSpotLightShadow.html" target="_blank"><img src="thumb/basicSpotLightShadow.png" alt=""></a>
+            <h5>Use Spot Light</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicStandardMaterial.html" target="_blank"><img src="thumb/basicStandardMaterial.png" alt=""></a>
+            <h5>Standard Material</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicTreeShadow.html" target="_blank"><img src="thumb/basicTreeShadow.png" alt=""></a>
+            <h5>Tree Model with Shadow</h5>
+        </div>
+
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/basicTriangle.html" target="_blank"><img src="thumb/basicTriangle.png" alt=""></a>
+            <h5>Basic Triangle</h5>
+        </div>
+
     </div>
-    
-    <div class="item">
-        <a href="examples/advancedGBuffer.html" target="_blank"><img src="thumb/advancedGBuffer.png" alt=""></a>
-        <h5>GBuffer</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/advancedRenderer.html" target="_blank"><img src="thumb/advancedRenderer.png" alt=""></a>
-        <h5>Monument with Advanced Renderer</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicColoredCube.html" target="_blank"><img src="thumb/basicColoredCube.png" alt=""></a>
-        <h5>Basic Colored Cube</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicCubeCustomShader.html" target="_blank"><img src="thumb/basicCubeCustomShader.png" alt=""></a>
-        <h5>Cube with Custom Shader</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicCubeWave.html" target="_blank"><img src="thumb/basicCubeWave.png" alt=""></a>
-        <h5>Cube Wave Animation</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicFlyingCubes.html" target="_blank"><img src="thumb/basicFlyingCubes.png" alt=""></a>
-        <h5>Flying Cubes</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicGeometry.html" target="_blank"><img src="thumb/basicGeometry.png" alt=""></a>
-        <h5>Basic Geometries</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicGLTFCameraAnimation.html" target="_blank"><img src="thumb/basicGLTFCameraAnimation.png" alt=""></a>
-        <h5>Camera Animation in glTF Model</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicJumpingCube.html" target="_blank"><img src="thumb/basicJumpingCube.png" alt=""></a>
-        <h5>Jumping Cube</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicJumpingCubeInfinite.html" target="_blank"><img src="thumb/basicJumpingCubeInfinite.png" alt=""></a>
-        <h5>Jumping Cube on Infinite Platform</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicLogoWireframe.html" target="_blank"><img src="thumb/basicLogoWireframe.png" alt=""></a>
-        <h5>ClayGL Logo with Wireframe</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicModelAnimation.html" target="_blank"><img src="thumb/basicModelAnimation.png" alt=""></a>
-        <h5>Load an Animated Model - Samba Dancing</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicModelLogo.html" target="_blank"><img src="thumb/basicModelLogo.png" alt=""></a>
-        <h5>ClayGL Logo Model</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicModelMonkey.html" target="_blank"><img src="thumb/basicModelMonkey.png" alt=""></a>
-        <h5>Load a Model - Suzanne Monkey</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicModelPBR.html" target="_blank"><img src="thumb/basicModelPBR.png" alt=""></a>
-        <h5>Load a PBR Model</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicOrbitControl.html" target="_blank"><img src="thumb/basicOrbitControl.png" alt=""></a>
-        <h5>Use Orbit Camera Control</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicPanorama.html" target="_blank"><img src="thumb/basicPanorama.png" alt=""></a>
-        <h5>Basic Panorama</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicPanoramaHDR.html" target="_blank"><img src="thumb/basicPanoramaHDR.png" alt=""></a>
-        <h5>Basic HDR Panorama</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicPaperMap.html" target="_blank"><img src="thumb/basicPaperMap.png" alt=""></a>
-        <h5>3D Paper Map</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicParallaxOcclusionMap.html" target="_blank"><img src="thumb/basicParallaxOcclusionMap.png" alt=""></a>
-        <h5>Parallax Occlusion Map</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicParametricWaterDrop.html" target="_blank"><img src="thumb/basicParametricWaterDrop.png" alt=""></a>
-        <h5>Water Drop Drawn with Parametric Surface</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicPointLightShadow.html" target="_blank"><img src="thumb/basicPointLightShadow.png" alt=""></a>
-        <h5>Shadow of Point Light on the Samba Dancing Model</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicRotatingCube.html" target="_blank"><img src="thumb/basicRotatingCube.png" alt=""></a>
-        <h5>Basic Rotating Cube</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicSkinnedModelClone.html" target="_blank"><img src="thumb/basicSkinnedModelClone.png" alt=""></a>
-        <h5>Dancing Groups</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicSkybox.html" target="_blank"><img src="thumb/basicSkybox.png" alt=""></a>
-        <h5>Basic Skybox</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicSpotLightShadow.html" target="_blank"><img src="thumb/basicSpotLightShadow.png" alt=""></a>
-        <h5>Use Spot Light</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicStandardMaterial.html" target="_blank"><img src="thumb/basicStandardMaterial.png" alt=""></a>
-        <h5>Standard Material</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicTreeShadow.html" target="_blank"><img src="thumb/basicTreeShadow.png" alt=""></a>
-        <h5>Tree Model with Shadow</h5>
-    </div>
-    
-    <div class="item">
-        <a href="examples/basicTriangle.html" target="_blank"><img src="thumb/basicTriangle.png" alt=""></a>
-        <h5>Basic Triangle</h5>
-    </div>
-    
 </div>
 </body>
 </html>

@@ -10,6 +10,10 @@ body {
     margin: 0 auto;
 }
 
+#navbarNav {
+    text-align: left;
+}
+
 #logo {
     height: 20px;
     margin-left: 30px;
