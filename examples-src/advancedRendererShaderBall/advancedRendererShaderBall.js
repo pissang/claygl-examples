@@ -28,7 +28,19 @@ var materials = [{
     diffuseMap: 'old-textured-fabric/old-textured-fabric-albedo3.jpg',
     normalMap: 'old-textured-fabric/old-textured-fabric-normal.jpg',
     roughnessMap: 'old-textured-fabric/old-textured-fabric-roughness2.jpg'
-}];
+}, {
+    diffuseMap: 'rustediron1/rustediron2_basecolor.jpg',
+    metalnessMap: 'rustediron1/rustediron2_metallic.jpg',
+    normalMap: 'rustediron1/rustediron2_normal.jpg'
+},
+// {
+//     diffuseMap: 'redbricks2b/redbricks2b.jpg',
+//     normalMap: 'redbricks2b/redbricks2b-normal.jpg',
+//     parallaxOcclusionMap: 'redbricks2b/redbricks2b-height4b.jpg',
+//     parallaxOcclusionScale: 0.02,
+//     roughness: 0.2
+// }
+];
 
 function setPBRTextures(app, rootNode, materialCfg) {
     var keys = Object.keys(materialCfg).filter(function (key) {
@@ -56,6 +68,7 @@ function setPBRTextures(app, rootNode, materialCfg) {
                 else {
                     mesh.material.set('metalness', materialCfg.metalness == null ? 0 : materialCfg.metalness);
                 }
+                materialCfg.parallaxOcclusionScale != null && mesh.material.set('parallaxOcclusionScale', materialCfg.parallaxOcclusionScale);
             }
         });
     });
@@ -71,6 +84,8 @@ var app = clay.application.create('#viewport', {
 
     init: function (app) {
 
+        app.renderer.clearColor = [0, 0, 0, 1];
+
         var adr = this._advancedRenderer = new ClayAdvancedRenderer(app.renderer, app.scene, app.timeline, {
             shadow: {
                 enable: true
@@ -79,8 +94,9 @@ var app = clay.application.create('#viewport', {
                 enable: true
             },
             postEffect: {
+                enable: true,
                 bloom: {
-                    enable: false
+                    enable: true
                 },
                 screenSpaceAmbientOcclusion: {
                     temporalFilter: false,
@@ -89,7 +105,8 @@ var app = clay.application.create('#viewport', {
                     intensity: 1.2
                 },
                 screenSpaceReflection: {
-                    enable: true
+                    enable: true,
+                    maxRoughness: 0.5
                 }
             }
         });
@@ -102,7 +119,7 @@ var app = clay.application.create('#viewport', {
         var light = app.createDirectionalLight([-1, -2, -1], '#fff', 1);
         light.shadowResolution = 2048;
 
-        this._camera = app.createCamera([0, 3, 5], [0, 1, 0]);
+        this._camera = app.createCamera([0, 3, 7], [0, 1, 0]);
 
         this._initKeyboardControl();
 
@@ -113,6 +130,8 @@ var app = clay.application.create('#viewport', {
         ground.scale.set(40, 20, 1);
         ground.rotation.rotateX(-Math.PI / 2);
         ground.castShadow = false;
+
+        this._startCameraAnimationLater(app);
 
         // Load model.
         return app.loadModel('../assets/models/shaderBall/shaderBall.gltf').then(function (result) {
@@ -128,13 +147,12 @@ var app = clay.application.create('#viewport', {
                 clonedNode.position.x = (i - MID_BALL) * BALL_GAP;
                 setPBRTextures(app, clonedNode, materials[i % materials.length]);
             }
+            // setPBRTextures(app, result.rootNode, materials[materials.length - 1]);
             result.rootNode.position.x = (BALL_COUNT - 1 - MID_BALL) * BALL_GAP;
             adr.render();
         });
 
     },
-
-    loop: function (app) {},
 
     _initKeyboardControl: function () {
         var self = this;
@@ -161,20 +179,75 @@ var app = clay.application.create('#viewport', {
             return;
         }
 
-        if (this._cameraAnimator) {
-            this._cameraAnimator.stop();
+        if (this._cameraAroundAnimator) {
+            this._cameraAroundAnimator.stop();
         }
+        if (this._cameraMoveAnimator) {
+            this._cameraMoveAnimator.stop();
+        }
+        clearTimeout(this._startCameraAnimationTimeout);
+
         var targetX = (ballIdx - MID_BALL) * BALL_GAP;
         var self = this;
-        this._cameraAnimator = app.timeline.animate(this._camera.position)
+        this._cameraMoveAnimator = app.timeline.animate(this._camera.position)
             .when(2000, {
-                x: targetX
+                x: targetX,
+                y: 3,
+                z: 7
             })
             .during(function () {
+                // self._camera.lookAt(new clay.Vector3(targetX, 1, 0), clay.Vector3.UP);
                 self._advancedRenderer.render();
             })
+            .done(this._startCameraAnimationLater.bind(this, app))
             .start('cubicInOut');
 
         this._currentTargetBall = ballIdx;
+    },
+
+    _startCameraAnimationLater: function (app) {
+        clearTimeout(this._startCameraAnimationTimeout);
+
+        setTimeout(this._startCameraAnimation.bind(this, app), 5000);
+    },
+
+    _startCameraAnimation: function (app) {
+        if (this._cameraAroundAnimator) {
+            this._cameraAroundAnimator.stop();
+        }
+        var animator = app.timeline.animate(this._camera.position, {
+            loop: true
+        });
+        var alpha = 0;
+        var self = this;
+
+        var targetX = (this._currentTargetBall - MID_BALL) * BALL_GAP;
+        for (var i = 0; i < 5; i++) {
+            var r = Math.cos(i / 2 * Math.PI) * 3 + 5;
+            var x = Math.sin(alpha) * r;
+            var z = Math.cos(alpha) * r;
+            var y = Math.cos(i / 4 * Math.PI) * 2 + 3;
+            alpha += Math.PI / 2;
+
+            animator.then(3000, {
+                x: x + targetX,
+                y: y,
+                z: z
+            });
+        }
+        animator.then(2000, {
+            x: this._camera.position.x,
+            y: this._camera.position.y,
+            z: this._camera.position.z
+        }).during(function () {
+            self._camera.lookAt(new clay.Vector3(targetX, 1, 0), clay.Vector3.UP);
+            self._advancedRenderer.render();
+        }).start('spline');
+
+        this._cameraAroundAnimator = animator;
+    },
+
+    loop: function () {
+        this._advancedRenderer.render();
     }
 });

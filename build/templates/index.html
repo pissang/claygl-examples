@@ -23,7 +23,7 @@
     <a class="navbar-brand" href="http://claygl.xyz">
         <img src="./img/logo.svg" id="logo" alt="">
     </a>
-    <div class="collapse navbar-collapse">
+    <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" href="http://docs.claygl.xyz/api">Documentation</a>
@@ -44,12 +44,14 @@
     <h1>
         Examples
     </h1>
-    {{ for: ${examples} as ${example}, ${idx} }}
-    <div class="item">
-        <a href="examples/${example.name}.html" target="_blank"><img src="thumb/${example.name}.png" alt=""></a>
-        <h5>${example.title}</h5>
+    <div class="row">
+        {{ for: ${examples} as ${example}, ${idx} }}
+        <div class="item col-lg-3 col-md-4 col-sm-6">
+            <a href="examples/${example.name}.html" target="_blank"><img src="thumb/${example.name}.png" alt=""></a>
+            <h5>${example.title}</h5>
+        </div>
+        {{ /for }}
     </div>
-    {{ /for }}
 </div>
 </body>
 </html>

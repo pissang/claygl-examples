@@ -2,6 +2,8 @@ var app = clay.application.create('#viewport', {
 
     autoRender: false,
 
+    devicePixelRatio: 1,
+
     init: function (app) {
 
         var adr = this._advancedRenderer = new ClayAdvancedRenderer(app.renderer, app.scene, app.timeline, {
