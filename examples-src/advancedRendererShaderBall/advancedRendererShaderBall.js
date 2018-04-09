@@ -28,7 +28,8 @@ var materials = [{
     diffuseMap: 'old-textured-fabric/old-textured-fabric-albedo3.jpg',
     normalMap: 'old-textured-fabric/old-textured-fabric-normal.jpg',
     roughnessMap: 'old-textured-fabric/old-textured-fabric-roughness2.jpg',
-    uvRepeat: [4, 4]
+    uvRepeat: [4, 4],
+    color: [0.7, 0.7, 0.7]
 }, {
     diffuseMap: 'rustediron1/rustediron2_basecolor.jpg',
     metalnessMap: 'rustediron1/rustediron2_metallic.jpg',
@@ -76,6 +77,11 @@ function setPBRTextures(app, rootNode, materialCfg) {
                 }
                 materialCfg.parallaxOcclusionScale != null && mesh.material.set('parallaxOcclusionScale', materialCfg.parallaxOcclusionScale);
                 materialCfg.uvRepeat != null && mesh.material.set('uvRepeat', materialCfg.uvRepeat);
+                materialCfg.color != null && mesh.material.set('color', materialCfg.color);
+            }
+            else if (mesh.material) {
+                mesh.material.set('roughness', 0.3);
+                mesh.material.set('color', '#fff');
             }
         });
     });
@@ -117,8 +123,8 @@ var app = clay.application.create('#viewport', {
                 },
                 depthOfField: {
                     enable: true,
-                    focalDistance: 2,
-                    blurRadius: 15,
+                    focalDistance: 2.5,
+                    blurRadius: 10,
                     aperture: 2.8,
                     quality: 'medium'
                 }
@@ -130,10 +136,10 @@ var app = clay.application.create('#viewport', {
         });
 
         // Create lights
-        var light = app.createDirectionalLight([-1, -2, -1], '#fff', 1);
+        var light = app.createDirectionalLight([-1, -2, -1], '#fff', 3);
         light.shadowResolution = 2048;
 
-        this._camera = app.createCamera([-2, 3, 2], [0, 1.5, 0]);
+        this._camera = app.createCamera([-2.5, 2, 2.5], [0, 1.5, 0]);
 
         this._initKeyboardControl();
 
@@ -163,29 +169,24 @@ var app = clay.application.create('#viewport', {
     },
 
     _initRoom: function (app) {
-        // var ground = app.createPlane({
-        //     diffuseMap: '../assets/textures/oakfloor2/oakfloor2_basecolor.jpg',
-        //     normalMap: '../assets/textures/oakfloor2/oakfloor2_normal.jpg',
-        //     roughnessMap: '../assets/textures/oakfloor2/oakfloor2_roughness.jpg',
-        //     uvRepeat: [10, 5]
-        // });
-        // ground.scale.set(40, 20, 1);
-        // ground.rotation.rotateX(-Math.PI / 2);
-        // ground.castShadow = false;
-        // ground.geometry.generateTangents();
-
-        var insideRoom = app.createCubeInside({
+        var mat = app.createMaterial({
             diffuseMap: '../assets/textures/pbr/bathroomtile2/bathroomtile2-basecolor.jpg',
             normalMap: '../assets/textures/pbr/bathroomtile2/bathroomtile2-normal-dx.jpg',
             roughnessMap: '../assets/textures/pbr/bathroomtile2/bathroomtile2-roughness.jpg',
-            uvRepeat: [10, 10 / 3],
-            roughness: 0.2
+            uvRepeat: [15, 5],
+            roughness: 0.4
         });
+        var ground = app.createPlane(mat);
+        ground.scale.set(60, 20, 1);
+        ground.rotation.rotateX(-Math.PI / 2);
+        ground.castShadow = false;
+        ground.geometry.generateTangents();
 
-        insideRoom.scale.set(30, 10, 10);
-        insideRoom.castShadow = false;
-        insideRoom.geometry.generateTangents();
-        insideRoom.position.y = 10;
+        var background = app.createPlane(mat);
+
+        background.scale.set(60, 20, 1);
+        background.castShadow = false;
+        background.position.z = -10;
     },
 
     _initKeyboardControl: function () {
@@ -221,14 +222,14 @@ var app = clay.application.create('#viewport', {
         }
         clearTimeout(this._startCameraAnimationTimeout);
 
-        var targetX = (ballIdx - MID_BALL) * BALL_GAP - 2;
+        var targetX = (ballIdx - MID_BALL) * BALL_GAP - 2.5;
         var self = this;
 
         this._cameraMoveAnimator = app.timeline.animate(this._camera.position)
             .when(2000, {
                 x: targetX,
-                y: 3,
-                z: 2
+                y: 2,
+                z: 2.5
             })
             .during(function () {
                 // self._camera.lookAt(new clay.Vector3(targetX, 1, 0), clay.Vector3.UP);
