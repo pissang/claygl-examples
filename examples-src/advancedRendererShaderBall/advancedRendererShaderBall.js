@@ -27,7 +27,8 @@ var materials = [{
 }, {
     diffuseMap: 'old-textured-fabric/old-textured-fabric-albedo3.jpg',
     normalMap: 'old-textured-fabric/old-textured-fabric-normal.jpg',
-    roughnessMap: 'old-textured-fabric/old-textured-fabric-roughness2.jpg'
+    roughnessMap: 'old-textured-fabric/old-textured-fabric-roughness2.jpg',
+    uvRepeat: [4, 4]
 }, {
     diffuseMap: 'rustediron1/rustediron2_basecolor.jpg',
     metalnessMap: 'rustediron1/rustediron2_metallic.jpg',
@@ -74,6 +75,7 @@ function setPBRTextures(app, rootNode, materialCfg) {
                     mesh.material.set('metalness', materialCfg.metalness == null ? 0 : materialCfg.metalness);
                 }
                 materialCfg.parallaxOcclusionScale != null && mesh.material.set('parallaxOcclusionScale', materialCfg.parallaxOcclusionScale);
+                materialCfg.uvRepeat != null && mesh.material.set('uvRepeat', materialCfg.uvRepeat);
             }
         });
     });
@@ -117,8 +119,8 @@ var app = clay.application.create('#viewport', {
                     enable: true,
                     focalDistance: 2,
                     blurRadius: 15,
-                    aperture: 1.4,
-                    quality: 'high'
+                    aperture: 2.8,
+                    quality: 'medium'
                 }
             }
         });
@@ -135,13 +137,7 @@ var app = clay.application.create('#viewport', {
 
         this._initKeyboardControl();
 
-        var ground = app.createPlane({
-            color: '#333',
-            roughness: 0.7
-        });
-        ground.scale.set(40, 20, 1);
-        ground.rotation.rotateX(-Math.PI / 2);
-        ground.castShadow = false;
+        this._initRoom(app);
 
         // this._startCameraAnimationLater(app);
 
@@ -166,6 +162,32 @@ var app = clay.application.create('#viewport', {
 
     },
 
+    _initRoom: function (app) {
+        // var ground = app.createPlane({
+        //     diffuseMap: '../assets/textures/oakfloor2/oakfloor2_basecolor.jpg',
+        //     normalMap: '../assets/textures/oakfloor2/oakfloor2_normal.jpg',
+        //     roughnessMap: '../assets/textures/oakfloor2/oakfloor2_roughness.jpg',
+        //     uvRepeat: [10, 5]
+        // });
+        // ground.scale.set(40, 20, 1);
+        // ground.rotation.rotateX(-Math.PI / 2);
+        // ground.castShadow = false;
+        // ground.geometry.generateTangents();
+
+        var insideRoom = app.createCubeInside({
+            diffuseMap: '../assets/textures/pbr/bathroomtile2/bathroomtile2-basecolor.jpg',
+            normalMap: '../assets/textures/pbr/bathroomtile2/bathroomtile2-normal-dx.jpg',
+            roughnessMap: '../assets/textures/pbr/bathroomtile2/bathroomtile2-roughness.jpg',
+            uvRepeat: [10, 10 / 3],
+            roughness: 0.2
+        });
+
+        insideRoom.scale.set(30, 10, 10);
+        insideRoom.castShadow = false;
+        insideRoom.geometry.generateTangents();
+        insideRoom.position.y = 10;
+    },
+
     _initKeyboardControl: function () {
         var self = this;
         document.body.addEventListener('keydown', function (e) {
@@ -187,7 +209,7 @@ var app = clay.application.create('#viewport', {
     },
 
     _moveCameraTo: function (ballIdx) {
-        if (ballIdx >= BALL_COUNT || ballIdx <= 0) {
+        if (ballIdx >= BALL_COUNT || ballIdx < 0) {
             return;
         }
 
@@ -201,6 +223,7 @@ var app = clay.application.create('#viewport', {
 
         var targetX = (ballIdx - MID_BALL) * BALL_GAP - 2;
         var self = this;
+
         this._cameraMoveAnimator = app.timeline.animate(this._camera.position)
             .when(2000, {
                 x: targetX,

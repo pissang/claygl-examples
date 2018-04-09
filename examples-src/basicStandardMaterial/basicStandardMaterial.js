@@ -40,9 +40,9 @@ var app = clay.application.create('#viewport', {
 
     _initGround: function (app) {
         var plane = app.createPlane({
-            diffuseMap: '../assets/textures/oakfloor2/oakfloor2_basecolor.png',
-            normalMap: '../assets/textures/oakfloor2/oakfloor2_normal.png',
-            roughnessMap: '../assets/textures/oakfloor2/oakfloor2_roughness.png',
+            diffuseMap: '../assets/textures/oakfloor2/oakfloor2_basecolor.jpg',
+            normalMap: '../assets/textures/oakfloor2/oakfloor2_normal.jpg',
+            roughnessMap: '../assets/textures/oakfloor2/oakfloor2_roughness.jpg',
             // Force convert the texture to power of two.
             // None power of two texture doesn't support tiling.
             convertTextureToPOT: true,
