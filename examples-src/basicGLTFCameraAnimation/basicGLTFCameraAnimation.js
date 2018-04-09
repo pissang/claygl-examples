@@ -34,9 +34,5 @@ var app = clay.application.create('#viewport', {
                 app.scene.setMainCamera(result.cameras[1]);
             }, 4000);
         });
-    },
-
-    loop: function (app) {
-        // console.log(app.scene.getMainCamera().worldTransform);
     }
 });
