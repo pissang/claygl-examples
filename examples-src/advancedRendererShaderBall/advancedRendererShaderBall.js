@@ -109,7 +109,7 @@ var app = clay.application.create('#viewport', {
             postEffect: {
                 enable: true,
                 bloom: {
-                    enable: true
+                    enable: false
                 },
                 screenSpaceAmbientOcclusion: {
                     temporalFilter: false,
@@ -123,7 +123,7 @@ var app = clay.application.create('#viewport', {
                 },
                 depthOfField: {
                     enable: true,
-                    focalDistance: 2.5,
+                    focalDistance: 3,
                     blurRadius: 10,
                     aperture: 2.8,
                     quality: 'medium'
@@ -136,7 +136,7 @@ var app = clay.application.create('#viewport', {
         });
 
         // Create lights
-        var light = app.createDirectionalLight([-1, -2, -1], '#fff', 3);
+        var light = app.createDirectionalLight([-0.5, -3, -1], '#fff', 3);
         light.shadowResolution = 2048;
 
         this._camera = app.createCamera([-2.5, 2, 2.5], [0, 1.5, 0]);
@@ -174,7 +174,12 @@ var app = clay.application.create('#viewport', {
             normalMap: '../assets/textures/pbr/bathroomtile2/bathroomtile2-normal-dx.jpg',
             roughnessMap: '../assets/textures/pbr/bathroomtile2/bathroomtile2-roughness.jpg',
             uvRepeat: [15, 5],
-            roughness: 0.4
+            roughness: 0.4,
+            texturesReady: function (textures) {
+                textures.forEach(function (texture) {
+                    texture.anisotropic = 8;
+                });
+            }
         });
         var ground = app.createPlane(mat);
         ground.scale.set(60, 20, 1);

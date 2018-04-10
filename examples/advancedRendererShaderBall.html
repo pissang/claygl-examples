@@ -79,11 +79,18 @@ var materials = [{
 }, {
     diffuseMap: 'old-textured-fabric/old-textured-fabric-albedo3.jpg',
     normalMap: 'old-textured-fabric/old-textured-fabric-normal.jpg',
-    roughnessMap: 'old-textured-fabric/old-textured-fabric-roughness2.jpg'
+    roughnessMap: 'old-textured-fabric/old-textured-fabric-roughness2.jpg',
+    uvRepeat: [4, 4],
+    color: [0.7, 0.7, 0.7]
 }, {
     diffuseMap: 'rustediron1/rustediron2_basecolor.jpg',
     metalnessMap: 'rustediron1/rustediron2_metallic.jpg',
     normalMap: 'rustediron1/rustediron2_normal.jpg'
+}, {
+    diffuseMap: 'waterwornstone1/waterwornstone1_Base_Color.jpg',
+    normalMap: 'waterwornstone1/waterwornstone1_Normal.jpg',
+    roughnessMap: 'waterwornstone1/waterwornstone1_Roughness.jpg',
+    parallaxOcclusionMap: 'waterwornstone1/waterwornstone1_Height.jpg'
 },
 // {
 //     diffuseMap: 'redbricks2b/redbricks2b.jpg',
@@ -121,6 +128,12 @@ function setPBRTextures(app, rootNode, materialCfg) {
                     mesh.material.set('metalness', materialCfg.metalness == null ? 0 : materialCfg.metalness);
                 }
                 materialCfg.parallaxOcclusionScale != null && mesh.material.set('parallaxOcclusionScale', materialCfg.parallaxOcclusionScale);
+                materialCfg.uvRepeat != null && mesh.material.set('uvRepeat', materialCfg.uvRepeat);
+                materialCfg.color != null && mesh.material.set('color', materialCfg.color);
+            }
+            else if (mesh.material) {
+                mesh.material.set('roughness', 0.3);
+                mesh.material.set('color', '#fff');
             }
         });
     });
@@ -148,7 +161,7 @@ var app = clay.application.create('#viewport', {
             postEffect: {
                 enable: true,
                 bloom: {
-                    enable: true
+                    enable: false
                 },
                 screenSpaceAmbientOcclusion: {
                     temporalFilter: false,
@@ -159,6 +172,13 @@ var app = clay.application.create('#viewport', {
                 screenSpaceReflection: {
                     enable: true,
                     maxRoughness: 0.5
+                },
+                depthOfField: {
+                    enable: true,
+                    focalDistance: 3,
+                    blurRadius: 10,
+                    aperture: 2.8,
+                    quality: 'medium'
                 }
             }
         });
@@ -168,22 +188,16 @@ var app = clay.application.create('#viewport', {
         });
 
         // Create lights
-        var light = app.createDirectionalLight([-1, -2, -1], '#fff', 1);
+        var light = app.createDirectionalLight([-0.5, -3, -1], '#fff', 3);
         light.shadowResolution = 2048;
 
-        this._camera = app.createCamera([0, 3, 7], [0, 1, 0]);
+        this._camera = app.createCamera([-2.5, 2, 2.5], [0, 1.5, 0]);
 
         this._initKeyboardControl();
 
-        var ground = app.createPlane({
-            color: '#333',
-            roughness: 0.7
-        });
-        ground.scale.set(40, 20, 1);
-        ground.rotation.rotateX(-Math.PI / 2);
-        ground.castShadow = false;
+        this._initRoom(app);
 
-        this._startCameraAnimationLater(app);
+        // this._startCameraAnimationLater(app);
 
         // Load model.
         return app.loadModel('../assets/models/shaderBall/shaderBall.gltf').then(function (result) {
@@ -199,11 +213,37 @@ var app = clay.application.create('#viewport', {
                 clonedNode.position.x = (i - MID_BALL) * BALL_GAP;
                 setPBRTextures(app, clonedNode, materials[i % materials.length]);
             }
-            // setPBRTextures(app, result.rootNode, materials[materials.length - 1]);
+            setPBRTextures(app, result.rootNode, materials[materials.length - 1]);
             result.rootNode.position.x = (BALL_COUNT - 1 - MID_BALL) * BALL_GAP;
             adr.render();
         });
 
+    },
+
+    _initRoom: function (app) {
+        var mat = app.createMaterial({
+            diffuseMap: '../assets/textures/pbr/bathroomtile2/bathroomtile2-basecolor.jpg',
+            normalMap: '../assets/textures/pbr/bathroomtile2/bathroomtile2-normal-dx.jpg',
+            roughnessMap: '../assets/textures/pbr/bathroomtile2/bathroomtile2-roughness.jpg',
+            uvRepeat: [15, 5],
+            roughness: 0.4,
+            texturesReady: function (textures) {
+                textures.forEach(function (texture) {
+                    texture.anisotropic = 8;
+                });
+            }
+        });
+        var ground = app.createPlane(mat);
+        ground.scale.set(60, 20, 1);
+        ground.rotation.rotateX(-Math.PI / 2);
+        ground.castShadow = false;
+        ground.geometry.generateTangents();
+
+        var background = app.createPlane(mat);
+
+        background.scale.set(60, 20, 1);
+        background.castShadow = false;
+        background.position.z = -10;
     },
 
     _initKeyboardControl: function () {
@@ -227,7 +267,7 @@ var app = clay.application.create('#viewport', {
     },
 
     _moveCameraTo: function (ballIdx) {
-        if (ballIdx >= BALL_COUNT || ballIdx <= 0) {
+        if (ballIdx >= BALL_COUNT || ballIdx < 0) {
             return;
         }
 
@@ -239,19 +279,20 @@ var app = clay.application.create('#viewport', {
         }
         clearTimeout(this._startCameraAnimationTimeout);
 
-        var targetX = (ballIdx - MID_BALL) * BALL_GAP;
+        var targetX = (ballIdx - MID_BALL) * BALL_GAP - 2.5;
         var self = this;
+
         this._cameraMoveAnimator = app.timeline.animate(this._camera.position)
             .when(2000, {
                 x: targetX,
-                y: 3,
-                z: 7
+                y: 2,
+                z: 2.5
             })
             .during(function () {
                 // self._camera.lookAt(new clay.Vector3(targetX, 1, 0), clay.Vector3.UP);
                 self._advancedRenderer.render();
             })
-            .done(this._startCameraAnimationLater.bind(this, app))
+            // .done(this._startCameraAnimationLater.bind(this, app))
             .start('cubicInOut');
 
         this._currentTargetBall = ballIdx;
