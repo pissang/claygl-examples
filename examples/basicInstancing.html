@@ -53,6 +53,7 @@ var app = clay.application.create('#viewport', {
 
     graphic: {
         shadow: true,
+        linear: true,
         tonemapping: true
     },
     init: function (app) {
@@ -69,13 +70,14 @@ var app = clay.application.create('#viewport', {
         });
 
         // Load boombox model.
-        app.loadModel('../assets/models/kgirls/kgirls01.gltf', {
+        app.loadModel('../assets/models/mini_legion_grunt/scene.gltf', {
             // shader: 'clay.basic',
             waitTextureLoaded: true
         })
             .then(function (result) {
 
                 var instancedMeshes = result.meshes.map(mesh => {
+                    mesh.material.set('color', [2, 2, 2]);
                     return new clay.InstancedMesh({
                         geometry: mesh.geometry,
                         material: mesh.material,
@@ -91,14 +93,15 @@ var app = clay.application.create('#viewport', {
                     parent.add(instancedMeshes[idx]);
                 });
 
-                var ROBOT_COUNT = 10;
+                var ROBOT_COUNT = 20;
                 var instances = [];
                 for (var i = 0; i < ROBOT_COUNT * 2; i++) {
                     for (var j = 0; j < ROBOT_COUNT; j++) {
                         var node = new clay.Node();
-                        node.position.x = (i - ROBOT_COUNT) * 150;
-                        node.position.z = (j - ROBOT_COUNT / 2) * 180 + 700;
+                        node.position.x = (i - ROBOT_COUNT) * 120;
+                        node.position.z = (j - ROBOT_COUNT / 2) * 140 + 700;
 
+                        node.scale.set(40, 40, 40);
 
                         instances.push({
                             node: node
