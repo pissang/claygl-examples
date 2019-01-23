@@ -10,7 +10,7 @@ var app = clay.application.create('#viewport', {
         this._camera = app.createCamera([0, 150, 200], [0, 100, 0]);
 
         // Load model.
-        app.loadModel('../assets/models/SambaDancing/SambaDancing.gltf');
+        app.loadModel('../assets/models/SambaDancing/SambaDancing.gltf')
 
         // Create lights
         app.createDirectionalLight([-1, -1, -1], '#fff', 0.7);

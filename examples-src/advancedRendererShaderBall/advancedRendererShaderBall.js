@@ -109,10 +109,10 @@ var app = clay.application.create('#viewport', {
             postEffect: {
                 enable: true,
                 bloom: {
-                    enable: false
+                    enable: true
                 },
                 screenSpaceAmbientOcclusion: {
-                    temporalFilter: false,
+                    temporalFilter: true,
                     enable: true,
                     radius: 0.2,
                     intensity: 1.2
@@ -123,10 +123,9 @@ var app = clay.application.create('#viewport', {
                 },
                 depthOfField: {
                     enable: true,
-                    focalDistance: 3,
+                    focalDistance: 2,
                     blurRadius: 10,
-                    aperture: 2.8,
-                    quality: 'medium'
+                    aperture: 1.4
                 }
             }
         });

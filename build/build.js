@@ -40,7 +40,8 @@ var BASE_URL = 'http://127.0.0.1/claygl-examples/';
 
     // TODO puppeteer will have Navigation Timeout Exceeded: 30000ms exceeded error in these examples.
     var screenshotBlackList = [
-        'basicFlyingCubes'
+        'basicFlyingCubes',
+        'basicPaperMap'
     ];
 
     glob(__dirname + '/../examples-src/*/README.md', async function (err, files) {
