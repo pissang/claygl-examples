@@ -41,7 +41,8 @@ var BASE_URL = 'http://127.0.0.1/claygl-examples/';
     // TODO puppeteer will have Navigation Timeout Exceeded: 30000ms exceeded error in these examples.
     var screenshotBlackList = [
         'basicFlyingCubes',
-        'basicPaperMap'
+        'basicPaperMap',
+        'advancedRendererShaderBall'
     ];
 
     glob(__dirname + '/../examples-src/*/README.md', async function (err, files) {
@@ -72,22 +73,22 @@ var BASE_URL = 'http://127.0.0.1/claygl-examples/';
 
             // Do screenshot
             if (BUILD_THUMBS && screenshotBlackList.indexOf(basename) < 0) {
-                // var page = await browser.newPage();
-                // var url = `${BASE_URL}/build/screenshot.html?${basename}`;
-                // for (var scriptUrl of extraScripts) {
-                //     url += ',' + scriptUrl;
-                // }
-                // page.on('pageerror', function (err) {
-                //     console.log(err.toString());
-                // });
-                // page.on('console', function (msg) {
-                //     console.log(msg.text);
-                // });
-                // console.log(basename);
-                // // https://stackoverflow.com/questions/46160929/puppeteer-wait-for-all-images-to-load-then-take-screenshot
-                // await page.goto(url, {'waitUntil' : 'networkidle0'});
-                // await page.screenshot({path: __dirname + '/../thumb/' + basename + '.png' });
-                // await page.close();
+                var page = await browser.newPage();
+                var url = `${BASE_URL}/build/screenshot.html?${basename}`;
+                for (var scriptUrl of extraScripts) {
+                    url += ',' + scriptUrl;
+                }
+                page.on('pageerror', function (err) {
+                    console.log(err.toString());
+                });
+                page.on('console', function (msg) {
+                    console.log(msg.text);
+                });
+                console.log(basename);
+                // https://stackoverflow.com/questions/46160929/puppeteer-wait-for-all-images-to-load-then-take-screenshot
+                await page.goto(url, {'waitUntil' : 'networkidle0'});
+                await page.screenshot({path: __dirname + '/../thumb/' + basename + '.png' });
+                await page.close();
             }
 
             exampleList.push({
